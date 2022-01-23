@@ -15,6 +15,7 @@
         <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
         <script src="resources/materials/sequences.js"></script>
         <script src="resources/materials/r2_sequences.js"></script>
+        <script src="resources/img/pair_lures.js"></script>
     </head>
     <body></body>
     <script>
@@ -318,6 +319,91 @@
         // shuffle sequence block order
         retrieve_sequences = jsPsych.randomization.shuffle(retrieve_sequences).concat(jsPsych.randomization.shuffle(retrieve_sequences2))
 
+
+        // pairs
+        var B_cats = counterbalancing_groups.filter(a => a.group == exp_type);
+
+        var pairs = []
+        var lure_opts = pair_lures;
+        for (i = 0; i < num_pairs; i+=1) {
+
+            // assign to random stimulus ID within correct category (e.g. 'Ap1', 'Ap2', 'Ap3'), with corresponding lures
+            var lures = jsPsych.randomization.sampleWithoutReplacement(lure_opts.filter(a => a.A_category == training_A[i].category), 1)[0];
+            lure_opts = lure_opts.filter(a => a.pair != lures.pair); // remove from option list
+            var B = jsPsych.randomization.sampleWithoutReplacement(B_cats.filter(a=>a.A_category == training_A[i].category).map(a=>a.B_item), 1)[0];
+            B_cats = B_cats.filter(a => a.B_item != B);
+            
+            // create random AB pairs
+            pairs.push({
+                A: training_A[i].image,
+                B: 'resources/img/B_items/'.concat(B),
+                A_category: training_A[i].category,
+                lures: lures
+            });
+        }
+
+        // pairs: add sequence order (for each test/retrieve block)
+        var block_labels = ["train_test_block1", "train_test_block2", "train_test_block3", "r1_block1", "r1_block2", "r1_block3", "r2_block1", "r2_block2"];
+        for (block = 0; block < 8; block+=1) {
+            var seq = retrieve_sequences[block];
+            var block_label = block_labels[block];
+
+            // trials in sequence that are general, specific, or neutral
+            var g_idx = seq.map((x, i) => x === 'general' ? i : -1).filter(index => index !== -1);
+            var s_idx = seq.map((x, i) => x === 'specific' ? i : -1).filter(index => index !== -1);
+            var n_idx = seq.map((x, i) => x === 'neutral' ? i : -1).filter(index => index !== -1);
+
+            // pairs that should be tested as general, specific, or neutral in this block
+            var g_pairs = jsPsych.randomization.shuffle(pairs.filter(a => a.lures[block_label] == 'general'));
+            var s_pairs = jsPsych.randomization.shuffle(pairs.filter(a => a.lures[block_label] == 'specific'));
+            var n_pairs = jsPsych.randomization.shuffle(pairs.filter(a => a.lures[block_label] == 'neutral'));
+
+            // training
+            if (block<3) {
+                // assign a sequence index to each pair
+                if (block==0) {
+                    g_pairs = g_pairs.map((x, idx) => ({...x, ttorder: [g_idx[idx]]}));
+                    s_pairs = s_pairs.map((x, idx) => ({...x, ttorder: [s_idx[idx]]}));
+                    n_pairs = n_pairs.map((x, idx) => ({...x, ttorder: [n_idx[idx]]}));
+                }
+                else {
+                    g_pairs = g_pairs.map((x, idx) => ({...x, ttorder:  x["ttorder"].concat(g_idx[idx])}));
+                    s_pairs = s_pairs.map((x, idx) => ({...x, ttorder:  x["ttorder"].concat(s_idx[idx])}));
+                    n_pairs = n_pairs.map((x, idx) => ({...x, ttorder:  x["ttorder"].concat(n_idx[idx])}));
+                }
+            }
+           
+            // retrieval 1
+            if (block>=3 & block<6) {
+                if (block == 3) {
+                    g_pairs = g_pairs.map((x, idx) => ({...x, r1order: [g_idx[idx]]}));
+                    s_pairs = s_pairs.map((x, idx) => ({...x, r1order: [s_idx[idx]]}));
+                    n_pairs = n_pairs.map((x, idx) => ({...x, r1order: [n_idx[idx]]}));
+                }
+                else {
+                    g_pairs = g_pairs.map((x, idx) => ({...x, r1order:  x["r1order"].concat(g_idx[idx])}));
+                    s_pairs = s_pairs.map((x, idx) => ({...x, r1order:  x["r1order"].concat(s_idx[idx])}));
+                    n_pairs = n_pairs.map((x, idx) => ({...x, r1order:  x["r1order"].concat(n_idx[idx])}));
+                }
+            }
+
+            // retrieval 2
+            if (block>=6) {
+                if (block == 6) {
+                    g_pairs = g_pairs.map((x, idx) => ({...x, r2order: [g_idx[idx]]}));
+                    s_pairs = s_pairs.map((x, idx) => ({...x, r2order: [s_idx[idx]]}));
+                    n_pairs = n_pairs.map((x, idx) => ({...x, r2order: [n_idx[idx]]}));
+                }
+                else {
+                    g_pairs = g_pairs.map((x, idx) => ({...x, r2order:  x["r2order"].concat(g_idx[idx])}));
+                    s_pairs = s_pairs.map((x, idx) => ({...x, r2order:  x["r2order"].concat(s_idx[idx])}));
+                    n_pairs = n_pairs.map((x, idx) => ({...x, r2order:  x["r2order"].concat(n_idx[idx])}));
+                }
+            }
+
+            pairs = g_pairs.concat(s_pairs).concat(n_pairs);
+
+        }
 
         var retrieve2_goal = {
             type: 'image-keyboard-response',
