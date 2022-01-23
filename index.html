@@ -1225,6 +1225,255 @@
                 r1_feedback
             ]
         };
+
+        /********************** Retrieve 2 *********************/
+
+        var retrieve2_instructions = {
+            type: 'instructions',
+            pages: retrieve2_ins,
+            show_clickable_nav: true,
+            show_page_number: true
+        };
+        
+
+        /* Retrieve #2 trial: ITI, B cue, goal cue, 6s delay, Question (specific or general) */
+        var retrieve2_goal = {
+            type: 'image-keyboard-response',
+            stimulus: function() {
+                /* TO DO:
+                    1) create specific and general conditions
+                    2) change goal cue pics
+                    3) counterbalance which picture used for goal across participants
+                */
+                if (jsPsych.timelineVariable('question') == 'general') {
+                    if (jsPsych.timelineVariable('q_valid')) {
+                        return goal_cues[1];
+                    } else{
+                        return goal_cues[0];
+                    }
+                        
+                } else if (jsPsych.timelineVariable('question') == 'specific') {
+                    if (jsPsych.timelineVariable('q_valid')) {
+                        return goal_cues[0];
+                    } else {
+                        return goal_cues[1];
+                    }
+                }
+            },
+            choices: jsPsych.ANY_KEYS,
+            trial_duration: goal_cue_time,
+            response_ends_trial: false
+        }
+        var retrieve2_question = {
+            type: 'html-keyboard-response',
+            stimulus: function() {
+                return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
+                                  jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
+                                  jsPsych.timelineVariable('lure'), false);
+            },
+            choices: ['ArrowLeft','ArrowRight'],
+            prompt: "",
+            trial_duration: training_q_time,
+            response_ends_trial: false,
+            data: {
+                exp_section: 'retrieve2',
+                A_item: jsPsych.timelineVariable('A'),
+                A_category: jsPsych.timelineVariable('A_category'),
+                B_item: jsPsych.timelineVariable('B'),
+                question: jsPsych.timelineVariable('question'),
+                q_valid: jsPsych.timelineVariable('q_valid'),
+                phase: jsPsych.timelineVariable('phase'),
+                block: jsPsych.timelineVariable('block')
+            },
+            on_finish: function(data) {
+                data.correct = is_correct(data)
+                console.log(data.correct);
+                data.A_foil = A_foil;
+                data.choices = choices;
+            }
+        };
+
+        var r2_feedback = {
+            type: 'html-button-response',
+            stimulus: function() {
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values(), false, false);
+            },
+            trial_duration: score_time,
+            choices: ['Next']
+        }
+        
+
+        /* Retrieve #2 practice */
+        
+        var q_options = ['two items of the same kind (e.g. two leaves).', 'two words describing items (e.g. LEAF and ROCK).'];
+        var q_prompts = ["After seeing a blue triangle, I will be asked to choose between...", "After seeing a green circle, I will be asked to choose between..."]
+        var retrieve2_quiz = {
+            type: 'survey-multi-choice',
+            questions: [
+                {
+                    prompt: q_prompts[0], 
+                    name: 'BlueTriangle', 
+                    options: q_options, 
+                    required: true,
+                    horizontal: false
+                }, 
+                {
+                    prompt: q_prompts[1], 
+                    name: 'GreenCircle', 
+                    options: q_options, 
+                    required: true,
+                    horizontal: false
+                }
+            ],
+            button_label: 'Submit',
+            on_finish: function(data) {
+                var num_correct = 0;
+                
+                if (data.response.BlueTriangle==q_options[0]) {
+                    if (['1','2','3','4'].includes(exp_type)) {
+                        num_correct += 1;
+                    }
+                } else {
+                    if (['5','6','7','8'].includes(exp_type)) {
+                        num_correct += 1;
+                    }
+                }
+                if (data.response.GreenCircle==q_options[1]) {
+                    if (['1','2','3','4'].includes(exp_type)) {
+                        num_correct += 1;
+                    }
+                } else {
+                    if (['5','6','7','8'].includes(exp_type)) {
+                        num_correct += 1;
+                    }
+                }
+                data.num_correct = num_correct;
+                
+            },
+            data: {
+                exp_section: 'r2_instruction_quiz'
+            }
+        };
+        var retrieve2_quiz_ans = {
+            type: 'html-button-response',
+            stimulus: function() {
+                html = 'Your score was '+jsPsych.data.get().last(1).values()[0].num_correct+'/2.<br><br>\
+                            <br><b>Answers</b><br><br>';
+                if (['1','2','3','4'].includes(exp_type)) {
+                    html+= '<div>'+q_prompts[0]+' <b>'+q_options[0]+'</b></div>\
+                            <div>'+q_prompts[1]+' <b>'+q_options[1]+'</b></div>\
+                            <br><br>';
+                } else {
+                    html+= '<div>'+q_prompts[0]+' <b>'+q_options[1]+'</b></div>\
+                            <div>'+q_prompts[1]+' <b>'+q_options[0]+'</b></div>\
+                            <br><br>'
+                }
+                html += 'Click <i>Next</i> to proceed to game practice.<br><br>';
+                return html;
+            },
+            choices: ['Next']
+        };
+         
+
+        var retrieve2_practice_instructions = {
+            type: 'instructions',
+            pages: [r2_practice_ins],
+            show_clickable_nav: true,
+            show_page_number: true
+        }
+        var practice_pairs_r2 = practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general'})).slice(0,1).concat(
+                                            practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific'})).slice(1,3),
+                                                practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general'})).slice(3,4));
+        
+        var retrieve2_question_practice = {
+            type: 'html-keyboard-response',
+            stimulus: function() {
+                return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
+                                  jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
+                                  jsPsych.timelineVariable('lure'), false);
+            },
+            choices: ['ArrowLeft','ArrowRight'],
+            prompt: "",
+            trial_duration: training_q_time,
+            response_ends_trial: false,
+            data: {
+                exp_section: 'retrieve2_practice',
+                A_item: jsPsych.timelineVariable('A'),
+                A_category: jsPsych.timelineVariable('A_category'),
+                B_item: jsPsych.timelineVariable('B'),
+                question: jsPsych.timelineVariable('question'),
+                q_valid: jsPsych.timelineVariable('q_valid')
+            },
+            on_finish: function(data) {
+                data.correct = is_correct(data)
+                console.log(data.correct);
+                data.A_foil = A_foil;
+                data.choices = choices;
+            }
+        };
+        
+        var r2_practice_feedback = {
+            type: 'html-button-response',
+            stimulus: function() {
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]).values(), false, true, practice_pairs_r2.length);
+            },
+            //trial_duration: score_time,
+            choices: ['Next']
+        }
+        
+        var retrieve2_practice = {
+            timeline: [
+                // study
+                r1_practice_study_ins,
+                countdown,
+                {
+                    timeline: [fixation, training_trial],
+                    timeline_variables: practice_pairs,
+                    randomize_order: true
+                },
+                // test
+                practice_test_ins,
+                countdown,
+                {
+                    timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question_practice], 
+                    timeline_variables: practice_pairs_r2,
+                    randomize_order: true
+                },
+                r2_practice_feedback
+            ],
+            on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+        }
+
+        var retrieve2_procedure = {
+            /* TO DO:
+                1) Make sure that ordering is correct (each question type tested with 2 pairs from each fruit)
+            */
+            timeline: [ 
+                // block 1
+                {
+                    timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question],
+                    timeline_variables: stim_r2[0],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                r2_feedback,
+                // block 2
+                {
+                    timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question],
+                    timeline_variables: stim_r2[1],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                r2_feedback,
+            ]
+        };
         
         timeline.push(preload);
         /*timeline.push(fullscreen);
@@ -1238,11 +1487,18 @@
 
         timeline.push(training_test_instructions);
         timeline.push(training_test_practice);
-        timeline.push(training_test);*/
+        timeline.push(training_test);
 
         timeline.push(retrieve1_instructions);
         timeline.push(retrieve1_practice);
-        timeline.push(retrieve1_procedure);
+        timeline.push(retrieve1_procedure);*/
+
+        timeline.push(retrieve2_instructions);
+        timeline.push(retrieve2_quiz);
+        timeline.push(retrieve2_quiz_ans);
+        timeline.push(retrieve2_practice_instructions);
+        timeline.push(retrieve2_practice);
+        timeline.push(retrieve2_procedure);
 
         jsPsych.init({
             timeline: timeline,
