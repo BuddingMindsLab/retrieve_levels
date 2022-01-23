@@ -6,7 +6,7 @@
         <script src="jspsych-6.3.1/jspsych.js"></script>
         <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
-        <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-external-html.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
@@ -487,8 +487,8 @@
 
 
         var retrieve2_goal = {
-            type: 'image-keyboard-response',
-            stimulus: pairs[0].A,
+            type: 'html-keyboard-response',
+            stimulus: '<p>HELLO</p>',
             choices: jsPsych.ANY_KEYS,
             trial_duration: 1000,
             response_ends_trial: false
