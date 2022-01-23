@@ -158,10 +158,134 @@
                                 '<br><br>You have almost completed the experiment. Now you will be directed to a brief survey on your experience.<br>\
                                  You will receive compensation only after completing the survey.<br><br>'];
 
+        /********************** Set-up *********************/
+        var img_size = 50;
+
+        // general experiment settings
+        var instruction_time  = 5000;
+        var num_pairs = 24; // 24
+        var score_time = 20000;
+
+        // Training
+        var fixation_time = 500;
+        var pair_time = 3500;
+        var training_q_time = 1500;
+        var study_ins = '<b>LEARNING</b> part will begin in 90 seconds.';
+        var test_ins='<b>REMEMBERING</b> part will begin in 90 seconds.';
+        var training_reps = 4; // 4
+        var pos_feedback_aud = 'resources/audio/positive.wav';
+        var neg_feedback_aud = 'resources/audio/negative.wav';
+ 
+        // Retreive
+        var rITI = [1500, 3500, 5500]; // 0.5s + 1,3,or 5s
+        var delay_time = 6000;
+        var b_cue_time = 1500;
+        var goal_cue_time = 1000;
+        var retrieve_q_time = 1000;
+        var retrieve_block_ins = 'Game will resume in 90 seconds';
+
+        
+        // stimuli
+        var training_A = [
+            {image:'resources/img/A_items/apple/apple1.jpg', category: 'apple'},
+            {image:'resources/img/A_items/apple/apple2.jpg', category: 'apple'},
+            {image:'resources/img/A_items/apple/apple3.jpg', category: 'apple'},
+            {image:'resources/img/A_items/apple/apple4.jpg', category: 'apple'},
+            {image:'resources/img/A_items/apple/apple5.jpg', category: 'apple'},
+            {image:'resources/img/A_items/apple/apple6.jpg', category: 'apple'},
+            {image:'resources/img/A_items/leaf/leaf1.jpg', category: 'leaf'},
+            {image:'resources/img/A_items/leaf/leaf2.jpg', category: 'leaf'},
+            {image:'resources/img/A_items/leaf/leaf3.jpg', category: 'leaf'},
+            {image:'resources/img/A_items/leaf/leaf4.jpg', category: 'leaf'},
+            {image:'resources/img/A_items/leaf/leaf5.jpg', category: 'leaf'},
+            {image:'resources/img/A_items/leaf/leaf6.jpg', category: 'leaf'},
+            {image:'resources/img/A_items/rock/rock1.jpg', category: 'rock'},
+            {image:'resources/img/A_items/rock/rock2.jpg', category: 'rock'},
+            {image:'resources/img/A_items/rock/rock3.jpg', category: 'rock'},
+            {image:'resources/img/A_items/rock/rock4.jpg', category: 'rock'},
+            {image:'resources/img/A_items/rock/rock5.jpg', category: 'rock'},
+            {image:'resources/img/A_items/rock/rock6.jpg', category: 'rock'},
+            {image:'resources/img/A_items/shell/shell1.jpg', category: 'shell'},
+            {image:'resources/img/A_items/shell/shell2.jpg', category: 'shell'},
+            {image:'resources/img/A_items/shell/shell3.jpg', category: 'shell'},
+            {image:'resources/img/A_items/shell/shell4.jpg', category: 'shell'},
+            {image:'resources/img/A_items/shell/shell5.jpg', category: 'shell'},
+            {image:'resources/img/A_items/shell/shell6.jpg', category: 'shell'},
+        ];
+        training_A = jsPsych.randomization.shuffle(training_A, num_pairs);
+        var training_B = [
+            "resources/img/B_items/B24.jpg",
+            "resources/img/B_items/B1.jpg",
+            "resources/img/B_items/B2.jpg",
+            "resources/img/B_items/B3.jpg",
+            "resources/img/B_items/B4.jpg",
+            "resources/img/B_items/B5.jpg",
+            "resources/img/B_items/B6.jpg",
+            "resources/img/B_items/B7.jpg",
+            "resources/img/B_items/B8.jpg",
+            "resources/img/B_items/B9.jpg",
+            "resources/img/B_items/B10.jpg",
+            "resources/img/B_items/B11.jpg",
+            "resources/img/B_items/B12.jpg",
+            "resources/img/B_items/B13.jpg",
+            "resources/img/B_items/B14.jpg",
+            "resources/img/B_items/B15.jpg",
+            "resources/img/B_items/B16.jpg",
+            "resources/img/B_items/B17.jpg",
+            "resources/img/B_items/B18.jpg",
+            "resources/img/B_items/B19.jpg",
+            "resources/img/B_items/B20.jpg",
+            "resources/img/B_items/B21.jpg",
+            "resources/img/B_items/B22.jpg",
+            "resources/img/B_items/B23.jpg"
+        ];
+        training_B = jsPsych.randomization.shuffle(training_B, num_pairs);
+        var goal_cues = [];
+        if (['1','2','3','4'].includes(exp_type)) {
+            goal_cues = ['resources/img/goal_cues/triangle.png', 'resources/img/goal_cues/circle.png'];
+        } else {
+            goal_cues = ['resources/img/goal_cues/circle.png', 'resources/img/goal_cues/triangle.png'];
+        }
+        var practice_img = [
+            'resources/img/practice/AT1.jpg',
+            'resources/img/practice/AT2.jpg',
+            'resources/img/practice/AT3.jpg',
+            'resources/img/practice/AT4.jpg',
+            'resources/img/practice/BT1.jpg',
+            'resources/img/practice/BT2.jpg',
+            'resources/img/practice/BT3.jpg',
+            'resources/img/practice/BT4.jpg',
+        ]
+        var ins_img = [
+            'resources/img/instructions/keyboard_key_left.png',
+            'resources/img/instructions/keyboard_key_right.png',
+            'resources/img/instructions/r1_ex1_general.png',
+            'resources/img/instructions/r1_ex1_neutral.png',
+            'resources/img/instructions/r1_ex1_specific.png',
+            'resources/img/instructions/r1_ex1_opts.png',
+            'resources/img/instructions/r2_ex1_gr1-4.png',
+            'resources/img/instructions/retrieve1_ex1.png',
+            'resources/img/instructions/reward_rocket.png',
+            'resources/img/instructions/reward_screen.png',
+            'resources/img/instructions/study_ex1.png',
+            'resources/img/instructions/study_ex2.png',
+            'resources/img/instructions/test_ex1_general.png',
+            'resources/img/instructions/test_ex1_specific.png',
+            'resources/img/instructions/test_ex1_neutral.png',
+        ]
+
+        // preload images
+        var preload = {
+            type: 'preload',
+            images: [
+                training_A.map(a => a.image), training_B, practice_img, ins_img
+            ]
+        };
+
 
         var retrieve2_goal = {
             type: 'image-keyboard-response',
-            stimulus: 'resources/img/goal_cues/triangle.png',
+            stimulus: training_A[0].image,
             choices: jsPsych.ANY_KEYS,
             trial_duration: 1000,
             response_ends_trial: false
