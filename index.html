@@ -931,6 +931,110 @@
                 jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
             }
         };
+
+        /* TRAINING TEST */
+        // final training test (intermixed specific, general, neutral)
+        var training_test_instructions = {
+            type: 'instructions',
+            pages: train_test_ins,
+            show_clickable_nav: true,
+            show_page_number: true
+        };
+
+        
+        var practice_pairs_ttest = [practice_pairs.map((x, idx) => ({...x, lure: x["n_lure"], question: 'neutral', phase: 'train_test_practice'})).slice(0,1).concat(
+                                            practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific', phase: 'train_test_practice'})).slice(1,3),
+                                                practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general', phase: 'train_test_practice'})).slice(3,4)),
+                                    practice_pairs.map((x, idx) => ({...x, lure: x["n_lure"], question: 'neutral', phase: 'train_test_practice'})).slice(2,3).concat(
+                                            practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific', phase: 'train_test_practice'})).slice(3,4),
+                                                practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general', phase: 'train_test_practice'})).slice(0,2)),
+                                    practice_pairs.map((x, idx) => ({...x, lure: x["n_lure"], question: 'neutral', phase: 'train_test_practice'})).slice(1,2).concat(
+                                        practice_pairs.map((x, idx) => ({...x, lure: x["n_lure"], question: 'neutral', phase: 'train_test_practice'})).slice(3,4),
+                                            practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific', phase: 'train_test_practice'})).slice(0,1),
+                                                practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general', phase: 'train_test_practice'})).slice(2,3))
+                                    ];
+         
+        var ttest_practice_feedback = {
+            type: 'html-button-response',
+            stimulus: function() {
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), false, true, practice_pairs_ttest[0].length*2);
+            },
+            //trial_duration: score_time,
+            choices: ['Next']
+        }
+        var training_test_practice = {
+            timeline: [
+                // study
+                practice_study_ins,
+                countdown,
+                {
+                    timeline: [fixation, training_trial],
+                    timeline_variables: practice_pairs,
+                    randomize_order: true
+                },
+                // test
+                practice_test_ins,
+                countdown,
+                {
+                    timeline: [fixation, train_test_trial_practice], 
+                    timeline_variables: practice_pairs_ttest[0],
+                    randomize_order: true
+                },
+                {
+                    timeline: [fixation, train_test_trial_practice], 
+                    timeline_variables: practice_pairs_ttest[1],
+                    randomize_order: true
+                },
+                /*{
+                    timeline: [fixation, train_test_trial], 
+                    timeline_variables: practice_pairs_ttest[2],
+                    randomize_order: true
+                },*/
+                ttest_practice_feedback
+            ],
+            on_timeline_finish: function() {
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+            }
+        }
+
+        var ttest_block_instructions = {
+            type: 'html-keyboard-response',
+            stimulus: train_test_ins,
+            trial_duration: instruction_time
+        }
+
+        var training_test = {
+            timeline: [
+                // block 1
+                {
+                    timeline: [{timeline: [fixation, train_test_trial], timeline_variables: stim_t_test[0]}],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                training_feedback,
+                // block 2
+                {
+                    timeline: [{timeline: [fixation, train_test_trial], timeline_variables: stim_t_test[1]}],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                training_feedback,
+                // block 3
+                {
+                    timeline: [{timeline: [fixation, train_test_trial], timeline_variables: stim_t_test[2]}],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                training_feedback
+            ]
+        };
         
         timeline.push(preload);
         //timeline.push(fullscreen);
@@ -938,7 +1042,10 @@
         //timeline.push(start_instructions);
         //timeline.push(training_instructions);
         //timeline.push(training_practice);
-        timeline.push(training_procedure);
+        //timeline.push(training_procedure);
+        timeline.push(training_test_instructions);
+        timeline.push(training_test_practice);
+        timeline.push(training_test);
 
         jsPsych.init({
             timeline: timeline,
