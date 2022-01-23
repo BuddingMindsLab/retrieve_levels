@@ -675,15 +675,149 @@
             }
         }
 
+        // overall training procedure (alternating study and test)
+
+        var training_feedback = {
+            type: 'html-button-response',
+            stimulus: function() {
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values(), false, false)
+            },
+            trial_duration: score_time,
+            choices: ['Next']
+        }
+
         var training_procedure = {
-            timeline: [//study_instructions, countdown, study_procedure,
-                       test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+            timeline: [
+                {
+                    // Neutral block 1
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
+                                {timeline: [fixation, train_test_trial], 
                                             timeline_variables: stim_t_neutral[0],
                                             on_timeline_start: function() {
                                                 stim_t_neutral[0] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[0],  function(a,b) { return a.A_category === b.A_category}, 3);
                                             },
-                                }]
-        }
+                                },
+                                training_feedback
+                            ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Neutral block 2
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
+                                {timeline: [fixation, train_test_trial], 
+                                            timeline_variables: stim_t_neutral[1],
+                                            on_timeline_start: function() {
+                                                stim_t_neutral[1] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[1],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                            },
+                                },
+                                training_feedback
+                            ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Neutral block 3
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
+                                {timeline: [fixation, train_test_trial], 
+                                            timeline_variables: stim_t_neutral[2],
+                                            on_timeline_start: function() {
+                                                stim_t_neutral[2] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[2],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                            }
+                                        },
+                                training_feedback
+                                ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Neutral block 4
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown,  
+                                {timeline: [fixation, train_test_trial], 
+                                            timeline_variables: stim_t_neutral[3],
+                                            on_timeline_start: function() {
+                                                stim_t_neutral[3] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[3],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                            },
+                                        },
+                                training_feedback,
+                                ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Specific block 5
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
+                                {timeline: [fixation, train_test_trial], 
+                                        timeline_variables: stim_t_specific[0],
+                                        on_timeline_start: function() {
+                                            stim_t_specific[0] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[0],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                        },
+                                    },
+                                training_feedback,
+                                ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Specific block 6
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
+                                {timeline: [fixation, train_test_trial], 
+                                        timeline_variables: stim_t_specific[1],
+                                        on_timeline_start: function() {
+                                            stim_t_specific[1] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[1],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                        },
+                                    },
+                                training_feedback,
+                                ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Specific block 7
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
+                                {timeline: [fixation, train_test_trial], 
+                                        timeline_variables: stim_t_specific[2],
+                                        on_timeline_start: function() {
+                                            stim_t_specific[2] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[2],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                        },
+                                    },
+                                training_feedback,
+                                ],
+                    on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                },
+                {
+                    // Specific block 8
+                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown,  
+                                {timeline: [fixation, train_test_trial], 
+                                        timeline_variables: stim_t_specific[3],
+                                        on_timeline_start: function() {
+                                            stim_t_specific[3] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[3],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                        },
+                                    },
+                                training_feedback,
+                                ],
+                     on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+                }
+            ]
+        };
 
         /* PRACTICE */
         var practice_pairs = [
@@ -803,8 +937,8 @@
         //timeline.push(consent);
         //timeline.push(start_instructions);
         //timeline.push(training_instructions);
-        timeline.push(training_practice);
-        //timeline.push(training_procedure);
+        //timeline.push(training_practice);
+        timeline.push(training_procedure);
 
         jsPsych.init({
             timeline: timeline,
