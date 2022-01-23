@@ -1609,6 +1609,29 @@
             on_finish: send_data()
         }
 
+        /********************** Debriefing *********************/
+
+        // debriefing
+        var debrief_page = {
+            type: 'external-html',
+            url: "resources/materials/debriefing_letter.html",
+            cont_btn: "finish",            
+            data: {disp_type: 'debriefing_page'},
+            on_finish: function() {
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+            }
+        }    
+        
+        // thank you
+        var end_trial = {
+            type: 'html-keyboard-response',
+            stimulus: '<p style="font-size:300%; line-height:1.0">Thank you for your participation!</p>',
+            trial_duration: instruction_time,
+            choices: jsPsych.ANY_KEYS
+        }
+
+        /********************** Experiment *********************/
 
         timeline.push(preload);
         timeline.push(fullscreen);
@@ -1638,6 +1661,8 @@
         timeline.push(reward_instructions_end);
         //timeline.push(send_data_trial);
         timeline.push(feedback_survey);
+        timeline.push(debrief_page);
+        timeline.push(end_trial);
 
         jsPsych.init({
             timeline: timeline,
