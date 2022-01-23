@@ -549,21 +549,60 @@
             }
         };
 
+        /********************** Training *********************/
+        var training_instructions = {
+            type: 'instructions',
+            pages: training_ins,
+            show_clickable_nav: true,
+            show_page_number: true
+        }
 
+        /* 1) STUDY */
 
-        var retrieve2_goal = {
+        var countdown = {
+            timeline: [
+                {
+
+                    type: 'html-keyboard-response',
+                    stimulus: '<p style="font-size:60px;">3</p>',
+                    trial_duration: 1000
+                },
+                {
+                    type: 'html-keyboard-response',
+                    stimulus: '<p style="font-size:60px;">2</p>',
+                    trial_duration: 1000
+                },
+                {
+                    type: 'html-keyboard-response',
+                    stimulus: '<p style="font-size:60px;">1</p>',
+                    trial_duration: 1000
+                }
+            ]
+        }
+        var study_instructions = {
             type: 'html-keyboard-response',
-            stimulus: '<p>'+subject_id+'</p>',
-            choices: jsPsych.ANY_KEYS,
-            trial_duration: 1000,
-            response_ends_trial: false
+            stimulus: study_ins,
+            trial_duration: instruction_time
+        }
+
+        var fixation = {
+            type: 'html-keyboard-response',
+            stimulus: '<div style="font-size:60px;">+</div>',
+            choices: jsPsych.NO_KEYS,
+            trial_duration: fixation_time,
+        };
+
+
+        var training_procedure = {
+            timeline: [study_instructions, countdown, fixation]
         }
         
         timeline.push(preload);
-        timeline.push(fullscreen);
-        timeline.push(consent);
-        timeline.push(start_instructions);
-        timeline.push(retrieve2_goal);
+        //timeline.push(fullscreen);
+        //timeline.push(consent);
+        //timeline.push(start_instructions);
+        timeline.push(training_instructions);
+        timeline.push(training_procedure);
 
         jsPsych.init({
             timeline: timeline,
