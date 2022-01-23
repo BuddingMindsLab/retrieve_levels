@@ -1475,8 +1475,143 @@
             ]
         };
         
+        /********************** Final score *********************/
+
+        var reward_instructions_end = {
+            type: 'html-button-response',
+            choices: ['Continue to survey'],
+            stimulus: function() {
+                var html = reward_ins_final[0];
+                var responses = jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
+                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(),
+                    jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()
+                );
+                var score = responses.map(a=>a.correct).filter(Boolean).length;
+                
+                html += Math.round((score/responses.length)*100,1) + '% (' + score+' /'+responses.length+')<br><br>';
+                html += 'Good job!<br><br><br><p style="color:yellow; font-size: 100px;"";>&star;</p><br><br>';
+
+                if (score/responses.length > 0.7) {
+                    html += 'You will recieve a bonus of $[]!<br><br>';
+                }
+
+                html += reward_ins_final[1]
+                return html;
+            },
+            trial_duration: score_time,
+        };
+
+        /********************************************* Survey *********************************************/
+
+        var survey_q1 = "What strategies did you use to remember the pairs?";
+        var survey_q2 = "Did you feel distracted or bored at any point? If so, when?";
+        var survey_q3 = "For the last two tasks (Memory game and Clue Memory game), did you think of the paired item during the delay or did you wait until the two answer options appeared?"
+        var survey_q4 = "Which part of the task did you find the most difficult?";
+        var survey_q5 = "Do you have any general comments about the experiment?";
+
+        var feedback_survey = {
+            type: 'survey-text',
+            questions: [
+                {prompt: survey_q1, name: 'strategy', rows: 5, columns:50, required:true},
+                {prompt: survey_q2, name: 'attention', rows: 5, columns:50, required:true},
+                {prompt: survey_q3, name: 'delay', rows: 5, columns:50, required:true},
+                {prompt: survey_q4, name: 'difficult', rows: 5, columns:50, required:true},
+                {prompt: survey_q5, name: 'general', rows: 5, columns:50, required:false}
+            ],
+            preamble: '<b>Survey</b>',
+            data: {
+                exp_section: 'survey'
+            },
+            button_label: 'Submit',
+            on_timeline_finish: function() {
+                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                        jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+                    }
+        }
+
+        /********************** Send data *********************/
+
+        function send_data() {
+            var end_time = new Date();
+            var duration = ((end_time - start_time)/60000).toFixed(2);
+
+            // organize data into sections
+            var training_responses1 = jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]);
+            var training_data1 = {'phase': 'training_practice', 'data': training_responses1.values()};  
+
+            var training_responses2 = jsPsych.data.get().filter([{exp_section: 'training_test'}]);
+            var training_data2 = {'phase': 'training', 'data': training_responses2.values()};  
+
+
+            var retrieve1_responses1 = jsPsych.data.get().filter([{exp_section: 'retrieve1_practice'}]);
+            var retrieve1_data1 = {'phase': 'retrieve1_practice', 'data': retrieve1_responses1.values()};
+
+            var retrieve1_responses2 = jsPsych.data.get().filter([{exp_section: 'retrieve1'}]);
+            var retrieve1_data2 = {'phase': 'retrieve1', 'data': retrieve1_responses2.values()};
+            
+
+            var retrieve2_responses1 = jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]);
+            var retrieve2_data1 = {'phase': 'retrieve2_practice', 'data': retrieve2_responses1.values()}; 
+
+            var retrieve2_responses2 = jsPsych.data.get().filter([{exp_section: 'retrieve2'}]);
+            var retrieve2_data2 = {'phase': 'retrieve2', 'data': retrieve2_responses2.values()};
+
+            var retrieve2_q = jsPsych.data.get().filter([{exp_section: 'r2_instruction_quiz'}]);
+            var retrieve2_quiz = {'phase': 'retrieve2_quiz', 'data': retrieve2_q.values()};
+
+            
+            var pairs_data = {'phase': 'pairs', 'data': pairs};
+            var seq_data = {'phase': 'sequences', 'data': retrieve_sequences};
+
+            // data to save in json file
+            var data = {
+                experiment: "retrieve",
+                repo: "buddingmindslab.github.io",
+                subject: subject_id,
+                duration: duration,
+                date: Date(),
+                group: exp_type,
+                data: [
+                    training_data1,
+                    training_data2,
+                    retrieve1_data1,
+                    retrieve1_data2,
+                    retrieve2_data1,
+                    retrieve2_quiz,
+                    retrieve2_data2,
+                    pairs_data,
+                    seq_data
+                ]
+            }
+            
+            // send data to savejs
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST','https://savejs.netlify.app/.netlify/functions/savejs');
+            xhr.setRequestHeader('Content-Type','application/json');
+            xhr.onload = function(){
+                if(xhr.status==200){
+                    var response=JSON.parse(xhr.responseText);
+                    console.log(response.success);
+                }
+                else {
+                    console.log("failed to send data");
+                }
+            };
+            xhr.send(JSON.stringify(data));
+            console.log("success sending data");
+        }
+
+        var send_data_trial = {
+            type: 'html-keyboard-response',
+            stimulus: 'Saving responses...',
+            choices: jsPsych.NO_KEYS,
+            trial_duration: 1000,
+            on_finish: send_data()
+        }
+
+
         timeline.push(preload);
-        /*timeline.push(fullscreen);
+        timeline.push(fullscreen);
         timeline.push(consent);
         timeline.push(start_instructions);
 
@@ -1491,7 +1626,7 @@
 
         timeline.push(retrieve1_instructions);
         timeline.push(retrieve1_practice);
-        timeline.push(retrieve1_procedure);*/
+        timeline.push(retrieve1_procedure);
 
         timeline.push(retrieve2_instructions);
         timeline.push(retrieve2_quiz);
@@ -1499,6 +1634,10 @@
         timeline.push(retrieve2_practice_instructions);
         timeline.push(retrieve2_practice);
         timeline.push(retrieve2_procedure);
+
+        timeline.push(reward_instructions_end);
+        //timeline.push(send_data_trial);
+        timeline.push(feedback_survey);
 
         jsPsych.init({
             timeline: timeline,
