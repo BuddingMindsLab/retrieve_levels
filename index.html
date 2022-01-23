@@ -7,8 +7,6 @@
         <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
-        <script src="jsPsych-6.3.1/plugins/jspsych-html-keyboard-response.js"></script>
-        <script src="jsPsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-external-html.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
@@ -19,7 +17,6 @@
         <script src="resources/materials/r2_sequences.js"></script>
         <script src="resources/img/pair_lures.js"></script>
         <script src="resources/materials/counterbalancing_groups.js"></script>
-        <script src="resources/materials/helpers.js"></script>
     </head>
     <body></body>
     <script>
@@ -488,64 +485,17 @@
 
 
 
-        var fixation = {
-            type: 'html-keyboard-response',
-            stimulus: '<div style="font-size:60px;">+</div>',
-            choices: jsPsych.NO_KEYS,
-            trial_duration: fixation_time,
-        };
 
-        var train_test_trial = {
-            type: 'html-keyboard-response',
-            stimulus: function() {
-               return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
-                                  jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), true);
-            },
-            choices: ['ArrowLeft','ArrowRight'],
-            prompt: "",
-            trial_duration: training_q_time,
-            response_ends_trial: false,
-            feedback: function() {
-                if (jsPsych.timelineVariable('phase') =='train_test') {
-                    return false;
-                } else {
-                    return true;
-                }
-            },
-            data: {
-                exp_section: 'training_test',
-                A_item: jsPsych.timelineVariable('A'),
-                A_category: jsPsych.timelineVariable('A_category'),
-                B_item: jsPsych.timelineVariable('B'),
-                question: jsPsych.timelineVariable('question'),
-                phase: jsPsych.timelineVariable('phase')
-            },
-            on_finish: function(data) {
-                data.correct = is_correct(data)
-                console.log(data.correct); 
-                data.A_foil = A_foil;
-                data.choices = choices;
-            }
-        }
-
-        /* var retrieve2_goal = {
+        var retrieve2_goal = {
             type: 'image-keyboard-response',
             stimulus: pairs[0].A,
             choices: jsPsych.ANY_KEYS,
             trial_duration: 1000,
             response_ends_trial: false
-        } */
-        var test = {
-            timeline: [fixation, train_test_trial], 
-            timeline_variables: stim_t_neutral[0],
-            on_timeline_start: function() {
-                stim_t_neutral[0] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[0],  function(a,b) { return a.A_category === b.A_category}, 3);
-            },
         }
         
         timeline.push(preload);
-        timeline.push(test);
+        timeline.push(retrieve2_goal);
 
         jsPsych.init({
             timeline: timeline,
