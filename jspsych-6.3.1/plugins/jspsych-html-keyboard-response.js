@@ -103,6 +103,8 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
 
     // function to handle responses by the subject
     var after_response = function(info) {
+      var leftImg = document.getElementById("leftChoice");
+      var rightImg = document.getElementById("rightChoice");
 
       // after a valid response, the stimulus will have the CSS class 'responded'
       // which can be used to provide visual feedback that a response was recorded
@@ -111,6 +113,15 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
       // only record the first response
       if (response.key == null) {
         response = info;
+      }
+
+      // highlight response
+      if(response.rt !== null) {
+        if(response.key == "arrowleft") {
+          leftImg.style.borderColor = "black";
+        } else {
+          rightImg.style.borderColor = "black";
+        }
       }
 
       if (trial.response_ends_trial) {
