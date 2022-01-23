@@ -629,16 +629,67 @@
             },
         };
 
+        /* 2) TEST */
+
+        var test_instructions = {
+            type: 'html-keyboard-response',
+            stimulus: test_ins,
+            trial_duration: instruction_time
+        }
+        
+        // 2AFC cued with B item to select paired A item
+        var train_test_trial = {
+            type: 'html-keyboard-response',
+            stimulus: function() {
+                /* TO DO: 
+                    1) indicate correct response
+                */
+               return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
+                                  jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
+                                  jsPsych.timelineVariable('lure'), true);
+            },
+            choices: ['ArrowLeft','ArrowRight'],
+            prompt: "",
+            trial_duration: training_q_time,
+            response_ends_trial: false,
+            feedback: function() {
+                if (jsPsych.timelineVariable('phase') =='train_test') {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            data: {
+                exp_section: 'training_test',
+                A_item: jsPsych.timelineVariable('A'),
+                A_category: jsPsych.timelineVariable('A_category'),
+                B_item: jsPsych.timelineVariable('B'),
+                question: jsPsych.timelineVariable('question'),
+                phase: jsPsych.timelineVariable('phase')
+            },
+            on_finish: function(data) {
+                data.correct = is_correct(data)
+                console.log(data.correct); 
+                data.A_foil = A_foil;
+                data.choices = choices;
+            }
+        }
 
         var training_procedure = {
-            timeline: [study_instructions, countdown, study_procedure]
+            timeline: [study_instructions, countdown, study_procedure,
+                       test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                            timeline_variables: stim_t_neutral[0],
+                                            on_timeline_start: function() {
+                                                stim_t_neutral[0] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[0],  function(a,b) { return a.A_category === b.A_category}, 3);
+                                            },
+                                }]
         }
         
         timeline.push(preload);
         //timeline.push(fullscreen);
         //timeline.push(consent);
         //timeline.push(start_instructions);
-        timeline.push(training_instructions);
+        //timeline.push(training_instructions);
         timeline.push(training_procedure);
 
         jsPsych.init({
