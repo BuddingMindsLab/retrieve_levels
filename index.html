@@ -684,13 +684,127 @@
                                             },
                                 }]
         }
+
+        /* PRACTICE */
+        var practice_pairs = [
+            {A: 'resources/img/practice/AT1.jpg',
+            B: 'resources/img/practice/BT1.jpg',
+            A_category: 'mushroom',
+            s_lure: 'resources/img/practice/AT2.jpg',
+            g_lure: 'tree',
+            n_lure: 'resources/img/practice/AT3.jpg'},
+            {A: 'resources/img/practice/AT2.jpg',
+            B: 'resources/img/practice/BT2.jpg',
+            A_category: 'mushroom',
+            s_lure: 'resources/img/practice/AT1.jpg',
+            g_lure: 'tree',
+            n_lure: 'resources/img/practice/AT4.jpg'},
+            {A: 'resources/img/practice/AT3.jpg',
+            B: 'resources/img/practice/BT3.jpg',
+            A_category: 'tree',
+            s_lure: 'resources/img/practice/AT4.jpg',
+            g_lure: 'mushroom',
+            n_lure: 'resources/img/practice/AT1.jpg'},
+            {A: 'resources/img/practice/AT4.jpg',
+            B: 'resources/img/practice/BT4.jpg',
+            A_category: 'tree',
+            s_lure: 'resources/img/practice/AT3.jpg',
+            g_lure: 'mushroom',
+            n_lure: 'resources/img/practice/AT2.jpg'},
+        ];
+        var practice_pairs_test = [practice_pairs.map((x, idx) => ({...x, lure: x["n_lure"], question: 'neutral', phase: 'train_practice'})),
+                                   practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific', phase: 'train_practice'}))];
+        
+
+        var practice_study_ins = {
+            type: 'html-keyboard-response',
+            stimulus: '<h1>Practice session</h1><br><br>'+study_ins,
+            trial_duration: instruction_time
+        }
+        var practice_test_ins = {
+            type: 'html-keyboard-response',
+            stimulus: '<h1>Practice session</h1><br><br>'+test_ins,
+            trial_duration: instruction_time
+        }
+        var train_test_trial_practice = {
+            type: 'html-keyboard-response',
+            stimulus: function() {
+                /* TO DO: 
+                    1) indicate correct response
+                */
+               return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
+                                  jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
+                                  jsPsych.timelineVariable('lure'), true);
+            },
+            choices: ['ArrowLeft','ArrowRight'],
+            prompt: "",
+            trial_duration: training_q_time,
+            response_ends_trial: false,
+            feedback: true,
+            data: {
+                exp_section: 'training_test_practice',
+                A_item: jsPsych.timelineVariable('A'),
+                A_category: jsPsych.timelineVariable('A_category'),
+                B_item: jsPsych.timelineVariable('B'),
+                question: jsPsych.timelineVariable('question'),
+                phase: jsPsych.timelineVariable('phase')
+            },
+            on_finish: function(data) {
+                data.correct = is_correct(data);
+                console.log(data.correct);        
+                data.A_foil = A_foil;
+                data.choices = choices;
+            }
+        }
+        
+        var training_practice_feedback = {
+            type: 'html-button-response',
+            stimulus: function() {
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), false, true, practice_pairs_test[0].length*2);
+            },
+            //trial_duration: score_time,
+            choices: ['Next']
+        }
+
+        var training_practice = {
+            timeline: [
+                practice_study_ins, 
+                countdown,
+                {
+                    // study
+                    timeline: [fixation, training_trial], 
+                    timeline_variables: practice_pairs,
+                    randomize_order: true
+                },
+                practice_test_ins, 
+                countdown,
+                {
+                    // Neutral block 1
+                    timeline: [fixation, train_test_trial_practice], 
+                    timeline_variables: practice_pairs_test[0],
+                    randomize_order: true
+                },
+                {
+                    // specific block 2
+                    timeline: [fixation, train_test_trial_practice], 
+                    timeline_variables: practice_pairs_test[1],
+                    randomize_order: true
+                },
+                training_practice_feedback
+            ],
+            on_timeline_finish: function() {
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                jsPsych.setProgressBar(curr_progress_bar_value + (1/22));
+            }
+        };
         
         timeline.push(preload);
         //timeline.push(fullscreen);
         //timeline.push(consent);
         //timeline.push(start_instructions);
         //timeline.push(training_instructions);
-        timeline.push(training_procedure);
+        timeline.push(training_practice);
+        //timeline.push(training_procedure);
 
         jsPsych.init({
             timeline: timeline,
