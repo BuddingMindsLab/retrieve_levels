@@ -7,15 +7,30 @@
         <link href="jspsych-6.3.1/css/jspsych.css" rel="stylesheet" type="text/css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        <script src="jspsych-6.3.1/plugins/jspsych-html-button-response.js"></script>
         <script src="jspsych-6.3.1/plugins/jspsych-image-keyboard-response.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-external-html.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-preload.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-fullscreen.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.3.1/plugins/jspsych-survey-multi-choice.js"></script>
     </head>
     <body></body>
     <script>
 
+        var start_time = new Date();
+
+        var exp_type = jsPsych.data.urlVariables().exp;
+
         var timeline = [];
+
+        var goal_cue_names = ['triangle.png', 'circle.png'];
+        if (['5', '6', '7', '8'].includes(exp_type)) {
+            goal_cue_names = ['circle.png', 'triangle.png']
+        }
 
         var retrieve2_goal = {
             type: 'image-keyboard-response',
-            stimulus: 'resources/img/goal_cues/circle.png',
+            stimulus: 'resources/img/goal_cues/'+goal_cue_names[0],
             choices: jsPsych.ANY_KEYS,
             trial_duration: 1000,
             response_ends_trial: false
@@ -30,7 +45,7 @@
             auto_update_progress_bar: false,
             message_progress_bar: '',
             on_close: function(){
-                send_data();
+                //send_data();
             }
         })
 
