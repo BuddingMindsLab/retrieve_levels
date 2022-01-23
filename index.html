@@ -510,14 +510,7 @@
         
         // Get participant consent
         var consent = {
-            timeline: [ 
-                {
-                    type: 'html-button-response',
-                    stimulus: '<p style="color: black; font-size: 20px;">\
-                                We would like to get your consent before starting the experiment.</p>',
-                    choices: ['Consent page'], 
-                    data: {disp_type: 'consent-instruction'}
-                },
+            timeline: [
                 {
                     /* TO DO:
                         1) Switch to appropriate consent form
@@ -897,8 +890,8 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), false, true, practice_pairs_test[0].length*2);
             },
-            //trial_duration: score_time,
-            choices: ['Next']
+            choices: ['Next'],
+            response_ends_trial: true
         }
 
         var training_practice = {
@@ -1641,7 +1634,6 @@
 
         timeline.push(training_instructions);
         timeline.push(training_practice);
-        timeline.push(training_practice_feedback);
         timeline.push(training_procedure);
 
         timeline.push(training_test_instructions);
