@@ -500,6 +500,55 @@
         }
         var subject_id = makeid();
 
+        /*************************************************** Instructions **************************************************/
+        
+        var fullscreen = {
+            type: 'fullscreen',
+            fullscreen_mode: true
+        }
+        
+        // Get participant consent
+        var consent = {
+            timeline: [ 
+                {
+                    type: 'html-button-response',
+                    stimulus: '<p style="color: black; font-size: 20px;">\
+                                We would like to get your consent before starting the experiment.</p>',
+                    choices: ['Consent page'], 
+                    data: {disp_type: 'consent-instruction'}
+                },
+                {
+                    /* TO DO:
+                        1) Switch to appropriate consent form
+                    */
+                    type: 'external-html',
+                    url: "resources/materials/consent.html",
+                    cont_btn: "start",
+                    check_fn: function(elem) {
+                        if (document.getElementById('agree_checkbox').checked) {                             
+                            return true;
+                        } else {
+                            alert("If you wish to participate, you must check the box next to the statement 'I agree.'");
+                            return false;
+                        }
+                        return false;
+                    },
+                    data: {disp_type: 'online_consent_form'}
+                }
+            ]
+        }
+
+        var start_instructions = {
+            type: 'instructions',
+            pages: [start_ins],
+            show_clickable_nav: true,
+            show_page_number: true,
+            on_start: function() {
+                // set progress bar to 0 at the start of experiment
+                jsPsych.setProgressBar(0);
+            }
+        };
+
 
 
         var retrieve2_goal = {
@@ -511,6 +560,9 @@
         }
         
         timeline.push(preload);
+        timeline.push(fullscreen);
+        timeline.push(consent);
+        timeline.push(start_instructions);
         timeline.push(retrieve2_goal);
 
         jsPsych.init({
