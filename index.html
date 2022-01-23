@@ -406,6 +406,86 @@
 
         }
 
+        // Training tests (neutral, blocks 1-4): separate columns of lure mappings and shuffle column order
+        var stim_t_neutral = jsPsych.randomization.shuffle([
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, lure: x["lures"].n_train_1, question: 'neutral', phase: 'train'})),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, lure: x["lures"].n_train_2, question: 'neutral', phase: 'train'})),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, lure: x["lures"].n_train_3, question: 'neutral', phase: 'train'})),
+                    ]);
+        stim_t_neutral[3] = pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, lure: x["lures"].n_train_4, question: 'neutral', phase: 'train'}));
+
+        // Training tests (specific, blocks 5-8): separate columns of lure mappings and shuffle column order
+        var stim_t_specific = jsPsych.randomization.shuffle([
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_1, question: 'specific', phase: 'train'})),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_2, question: 'specific', phase: 'train'})),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_3, question: 'specific', phase: 'train'})),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_4, question: 'specific', phase: 'train'}))]);
+        
+        // Training final test (blocks 1-3)
+        // TO DO !!! check everything is working (question order, question type + lure match, lures are correct)
+        var stim_t_test = [
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["ttorder"][0], 
+                                                  question: x["lures"].train_test_block1, 
+                                                  phase: 'train_test',
+                                                  lure: x["lures"][x["lures"].train_test_block1.substring(0,1)+"_train_test"]})).sort((a,b)=> (a.order > b.order ? 1 : -1)),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["ttorder"][1], 
+                                                  question: x["lures"].train_test_block2, 
+                                                  phase: 'train_test',
+                                                  lure: x["lures"][x["lures"].train_test_block2.substring(0,1)+"_train_test"]})).sort((a,b)=> (a.order > b.order ? 1 : -1)),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["ttorder"][2], 
+                                                  question: x["lures"].train_test_block3, 
+                                                  phase: 'train_test',
+                                                  lure: x["lures"][x["lures"].train_test_block3.substring(0,1)+"_train_test"]})).sort((a,b)=> (a.order > b.order ? 1 : -1))];
+
+        // Retrieve 1 (blocks 1-3)
+        // TO DO !!! check everything is working (question order, question type + lure match, lures are correct)
+        var stim_r1 = [
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["r1order"][0], 
+                                                  question: x["lures"].r1_block1, 
+                                                  phase: 'r1',
+                                                  block: 1,
+                                                  lure: x["lures"][x["lures"].r1_block1.substring(0,1)+"_r1"]})).sort((a,b)=> (a.order > b.order ? 1 : -1)),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["r1order"][1], 
+                                                  question: x["lures"].r1_block2, 
+                                                  phase: 'r1',
+                                                  block: 2,
+                                                  lure: x["lures"][x["lures"].r1_block2.substring(0,1)+"_r1"]})).sort((a,b)=> (a.order > b.order ? 1 : -1)),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["r1order"][2], 
+                                                  question: x["lures"].r1_block3, 
+                                                  phase: 'r1',
+                                                  block: 3,
+                                                  lure: x["lures"][x["lures"].r1_block3.substring(0,1)+"_r1"]})).sort((a,b)=> (a.order > b.order ? 1 : -1))];
+
+
+
+        // Retrieve 2 (blocks 1-2)
+
+        // TO DO !!! check everything is working (question order, question type + lure match, lures are correct)
+        var stim_r2 = [
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["r2order"][0], 
+                                                  question: x["lures"].r2_block1, 
+                                                  phase: 'r2',
+                                                  block: 1,
+                                                  lure: x["lures"][x["lures"].r2_block1.substring(0,1)+"_r2"],
+                                                })).sort((a,b)=> (a.order > b.order ? 1 : -1),),
+                    pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, order: x["r2order"][1], 
+                                                  question: x["lures"].r2_block2, 
+                                                  phase: 'r2',
+                                                  block: 2,
+                                                  lure: x["lures"][x["lures"].r2_block2.substring(0,1)+"_r2"],
+                                                })).sort((a,b)=> (a.order > b.order ? 1 : -1))];
+
+        var invalid_pairs = jsPsych.randomization.sampleWithoutReplacement(stim_r2[0].filter(a=>a.A_category == 'apple' && a.order>11), 1); // pairs where cue will be invalid
+        invalid_pairs = invalid_pairs.concat(jsPsych.randomization.sampleWithoutReplacement(stim_r2[0].filter(a=>a.A_category == 'leaf' && a.order>11), 1));
+        invalid_pairs = invalid_pairs.concat(jsPsych.randomization.sampleWithoutReplacement(stim_r2[0].filter(a=>a.A_category == 'rock' && a.order>11), 1));
+        invalid_pairs = invalid_pairs.concat(jsPsych.randomization.sampleWithoutReplacement(stim_r2[0].filter(a=>a.A_category == 'shell' && a.order>11), 1));
+        invalid_pairs = invalid_pairs.map(a=>a.A);
+
+        stim_r2 = [stim_r2[0].map((x, idx) => ({...x, q_valid: !invalid_pairs.includes(x["A"])})), stim_r2[1].map((x, idx) => ({...x, q_valid: !invalid_pairs.includes(x["A"])}))];
+
+
+
+
         var retrieve2_goal = {
             type: 'image-keyboard-response',
             stimulus: pairs[0].A,
