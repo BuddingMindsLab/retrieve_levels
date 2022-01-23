@@ -42,6 +42,12 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
         default: null,
         description: 'How long to hide the stimulus.'
       },
+      feedback: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'Give feedback',
+        default: false,
+        description: 'If true, feedback sound played after response.'
+      },
       trial_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Trial duration',
@@ -121,6 +127,30 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
           leftImg.style.borderColor = "black";
         } else {
           rightImg.style.borderColor = "black";
+        }
+      }
+
+      // give audio and visual feedback
+      if (trial.feedback == true) {
+        if((response.key == "arrowleft" && leftImg.classList.contains('corr')) ||
+          (response.key == "arrowright" && rightImg.classList.contains('corr'))) {
+            var aud = document.getElementById("correctAudio");
+            aud.muted = false;
+            aud.play();
+            if(response.key == "arrowleft") {
+              leftImg.style.borderColor = "green";
+            } else {
+              rightImg.style.borderColor = "green";
+            }
+        } else {
+            var aud = document.getElementById("incorrectAudio");
+            aud.muted = false;
+            aud.play();
+            if(response.key == "arrowleft") {
+              leftImg.style.borderColor = "red";
+            } else {
+              rightImg.style.borderColor = "red";
+            }
         }
       }
 
