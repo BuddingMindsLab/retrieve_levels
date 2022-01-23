@@ -54,26 +54,13 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
         default: true,
         description: 'If true, trial will end when subject makes a response.'
       },
-      practice: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: 'Practice trial',
-        default: false,
-        description: 'If true, trial include a practice trial header.'
-      },
-      feedback: {
-        type: jsPsych.plugins.parameterType.BOOL,
-        pretty_name: 'Give feedback',
-        default: false,
-        description: 'If true, feedback sound played after response.'
-      }
+
     }
   }
 
   plugin.trial = function(display_element, trial) {
 
     var new_html = '<div id="jspsych-html-keyboard-response-stimulus">'+trial.stimulus+'</div>';
-
-    
 
     // add prompt
     if(trial.prompt !== null){
@@ -116,8 +103,6 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
 
     // function to handle responses by the subject
     var after_response = function(info) {
-      var leftImg = document.getElementById("leftChoice");
-      var rightImg = document.getElementById("rightChoice");
 
       // after a valid response, the stimulus will have the CSS class 'responded'
       // which can be used to provide visual feedback that a response was recorded
@@ -126,39 +111,6 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
       // only record the first response
       if (response.key == null) {
         response = info;
-      }
-
-      // highlight response
-      if(response.rt !== null) {
-        if(response.key == "arrowleft") {
-          leftImg.style.borderColor = "black";
-        } else {
-          rightImg.style.borderColor = "black";
-        }
-      }
-
-      // give audio and visual feedback
-      if (trial.feedback == true) {
-        if((response.key == "arrowleft" && leftImg.classList.contains('corr')) ||
-          (response.key == "arrowright" && rightImg.classList.contains('corr'))) {
-            var aud = document.getElementById("correctAudio");
-            aud.muted = false;
-            aud.play();
-            if(response.key == "arrowleft") {
-              leftImg.style.borderColor = "green";
-            } else {
-              rightImg.style.borderColor = "green";
-            }
-        } else {
-            var aud = document.getElementById("incorrectAudio");
-            aud.muted = false;
-            aud.play();
-            if(response.key == "arrowleft") {
-              leftImg.style.borderColor = "red";
-            } else {
-              rightImg.style.borderColor = "red";
-            }
-        }
       }
 
       if (trial.response_ends_trial) {
