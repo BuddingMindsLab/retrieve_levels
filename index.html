@@ -16,6 +16,7 @@
         <script src="resources/materials/sequences.js"></script>
         <script src="resources/materials/r2_sequences.js"></script>
         <script src="resources/img/pair_lures.js"></script>
+        <script src="resources/materials/counterbalancing_groups.js"></script>
     </head>
     <body></body>
     <script>
@@ -407,7 +408,7 @@
 
         var retrieve2_goal = {
             type: 'image-keyboard-response',
-            stimulus: training_A[0].image,
+            stimulus: pairs[0].A,
             choices: jsPsych.ANY_KEYS,
             trial_duration: 1000,
             response_ends_trial: false
