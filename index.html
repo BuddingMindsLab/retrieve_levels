@@ -484,12 +484,27 @@
 
         stim_r2 = [stim_r2[0].map((x, idx) => ({...x, q_valid: !invalid_pairs.includes(x["A"])})), stim_r2[1].map((x, idx) => ({...x, q_valid: !invalid_pairs.includes(x["A"])}))];
 
+        /**************************************************** subject ID ****************************************************/
+    
+        // Subject id = subject number + 
+        function makeid() {
+            var id = '';
+
+            // subject number (15 digit code)
+            id += jsPsych.randomization.randomID(15);
+
+            // condition
+            //id += group_condition.toString();
+
+            return id;
+        }
+        var subject_id = makeid();
 
 
 
         var retrieve2_goal = {
             type: 'html-keyboard-response',
-            stimulus: '<p>HELLO</p>',
+            stimulus: '<p>'+subject_id+'</p>',
             choices: jsPsych.ANY_KEYS,
             trial_duration: 1000,
             response_ends_trial: false
