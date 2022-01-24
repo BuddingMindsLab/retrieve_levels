@@ -1251,11 +1251,6 @@
         var retrieve2_goal = {
             type: 'image-keyboard-response',
             stimulus: function() {
-                /* TO DO:
-                    1) create specific and general conditions
-                    2) change goal cue pics
-                    3) counterbalance which picture used for goal across participants
-                */
                 if (jsPsych.timelineVariable('question') == 'general') {
                     if (jsPsych.timelineVariable('q_valid')) {
                         return goal_cues[1];
@@ -1392,9 +1387,9 @@
             show_clickable_nav: true,
             show_page_number: true
         }
-        var practice_pairs_r2 = practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general'})).slice(0,1).concat(
-                                            practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific'})).slice(1,3),
-                                                practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general'})).slice(3,4));
+        var practice_pairs_r2 = practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general', q_valid: true})).slice(0,1).concat(
+                                            practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific', q_valid: true})).slice(1,3),
+                                                practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general', q_valid: true})).slice(3,4));
         
         var retrieve2_question_practice = {
             type: 'html-keyboard-response',
