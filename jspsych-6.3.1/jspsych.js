@@ -2013,12 +2013,15 @@ jsPsych.randomization = (function() {
     return shuffle(arr);
   }
 
-  module.shuffleNoRepeats = function(arr, equalityTest) {
+  module.shuffleNoRepeats = function(arr, equalityTest, numRep) {
     if(!Array.isArray(arr)){
       console.error('First argument to jsPsych.randomization.shuffleNoRepeats() must be an array.')
     }
     if(typeof equalityTest !== 'undefined' && typeof equalityTest !== 'function'){
       console.error('Second argument to jsPsych.randomization.shuffleNoRepeats() must be a function.')
+    }
+    if(typeof numRep !== 'undefined' && typeof numRep !== 'number'){
+      console.error('Third argument to jsPsych.randomization.shuffleNoRepeats() must be a number.')
     }
     // define a default equalityTest
     if (typeof equalityTest == 'undefined') {
@@ -2030,22 +2033,30 @@ jsPsych.randomization = (function() {
         }
       }
     }
+    // default number of repetitions to look for is 1
+    if (typeof numRep == 'undefined') {
+      numRep = 1;
+    }
 
     var random_shuffle = shuffle(arr);
-    for (var i = 0; i < random_shuffle.length - 1; i++) {
-      if (equalityTest(random_shuffle[i], random_shuffle[i + 1])) {
+    for (var i = 0; i < random_shuffle.length - (x+1) - 1; i++) {
+      var eq = true;
+      for (var x = 0; x < numRep; x++) {
+        eq = eq && equalityTest(random_shuffle[i], random_shuffle[i + x + 1]);
+      }
+      if (eq) {
         // neighbors are equal, pick a new random neighbor to swap (not the first or last element, to avoid edge cases)
         var random_pick = Math.floor(Math.random() * (random_shuffle.length - 2)) + 1;
         // test to make sure the new neighbor isn't equal to the old one
         while (
-          equalityTest(random_shuffle[i + 1], random_shuffle[random_pick]) ||
-          (equalityTest(random_shuffle[i + 1], random_shuffle[random_pick + 1]) || equalityTest(random_shuffle[i + 1], random_shuffle[random_pick - 1]))
+          equalityTest(random_shuffle[i + numRep], random_shuffle[random_pick]) ||
+          (equalityTest(random_shuffle[i + numRep], random_shuffle[random_pick + 1]) || equalityTest(random_shuffle[i + numRep], random_shuffle[random_pick - 1]))
         ) {
           random_pick = Math.floor(Math.random() * (random_shuffle.length - 2)) + 1;
         }
         var new_neighbor = random_shuffle[random_pick];
-        random_shuffle[random_pick] = random_shuffle[i + 1];
-        random_shuffle[i + 1] = new_neighbor;
+        random_shuffle[random_pick] = random_shuffle[i + numRep];
+        random_shuffle[i + numRep] = new_neighbor;
       }
     }
 
