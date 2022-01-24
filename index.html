@@ -284,7 +284,7 @@
         var preload = {
             type: 'preload',
             images: [
-                training_A.map(a => a.image), training_B, practice_img, ins_img
+                training_A.map(a => a.image), training_B, practice_img, ins_img, goal_cues
             ]
         };
 
@@ -415,6 +415,10 @@
                     pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, lure: x["lures"].n_train_3, question: 'neutral', phase: 'train'})),
                     ]);
         stim_t_neutral[3] = pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item, lure: x["lures"].n_train_4, question: 'neutral', phase: 'train'}));
+        for (i=0; i<stim_t_neutral.length; i++) { // shuffle testing order of pairs
+            stim_t_neutral[i] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[i],  function(a,b) { return a.A_category === b.A_category}, 3);
+        }
+
 
         // Training tests (specific, blocks 5-8): separate columns of lure mappings and shuffle column order
         var stim_t_specific = jsPsych.randomization.shuffle([
@@ -422,7 +426,11 @@
                     pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_2, question: 'specific', phase: 'train'})),
                     pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_3, question: 'specific', phase: 'train'})),
                     pairs.map((x, idx) => ({...x, A_item: x["lures"].A_item,lure: x["lures"].s_train_4, question: 'specific', phase: 'train'}))]);
-        
+        for (i=0; i<stim_t_specific.length; i++) { // shuffle testing order of pairs
+            stim_t_specific[i] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[i],  function(a,b) { return a.A_category === b.A_category}, 3);
+        }
+
+
         // Training final test (blocks 1-3)
         // TO DO !!! check everything is working (question order, question type + lure match, lures are correct)
         var stim_t_test = [
@@ -614,15 +622,6 @@
             }
         };
 
-        // 1) 24 trials of study (AB pairs in randomized order)
-        var study_procedure = {
-            timeline: [fixation, training_trial],
-            timeline_variables: pairs,
-            on_timeline_start: function() {
-                pairs = jsPsych.randomization.shuffleNoRepeats(pairs,  function(a,b) { return a.A_category === b.A_category}, 3);
-            },
-        };
-
         /* 2) TEST */
 
         var test_instructions = {
@@ -683,14 +682,12 @@
         var training_procedure = {
             timeline: [
                 {
-                    // Neutral block 1
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
-                                {timeline: [fixation, train_test_trial], 
-                                            timeline_variables: stim_t_neutral[0],
-                                            on_timeline_start: function() {
-                                                stim_t_neutral[0] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[0],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                            },
-                                },
+                    // Neutral block 1: 24 study AB pairs (random-ish order)
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_neutral[0]},
                                 training_feedback
                             ],
                     on_timeline_finish: function() {
@@ -700,13 +697,11 @@
                 },
                 {
                     // Neutral block 2
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
-                                {timeline: [fixation, train_test_trial], 
-                                            timeline_variables: stim_t_neutral[1],
-                                            on_timeline_start: function() {
-                                                stim_t_neutral[1] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[1],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                            },
-                                },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_neutral[1]},
                                 training_feedback
                             ],
                     on_timeline_finish: function() {
@@ -716,13 +711,11 @@
                 },
                 {
                     // Neutral block 3
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
-                                {timeline: [fixation, train_test_trial], 
-                                            timeline_variables: stim_t_neutral[2],
-                                            on_timeline_start: function() {
-                                                stim_t_neutral[2] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[2],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                            }
-                                        },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_neutral[2]},
                                 training_feedback
                                 ],
                     on_timeline_finish: function() {
@@ -732,13 +725,11 @@
                 },
                 {
                     // Neutral block 4
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown,  
-                                {timeline: [fixation, train_test_trial], 
-                                            timeline_variables: stim_t_neutral[3],
-                                            on_timeline_start: function() {
-                                                stim_t_neutral[3] = jsPsych.randomization.shuffleNoRepeats(stim_t_neutral[3],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                            },
-                                        },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_neutral[3]},
                                 training_feedback,
                                 ],
                     on_timeline_finish: function() {
@@ -748,13 +739,11 @@
                 },
                 {
                     // Specific block 5
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
-                                {timeline: [fixation, train_test_trial], 
-                                        timeline_variables: stim_t_specific[0],
-                                        on_timeline_start: function() {
-                                            stim_t_specific[0] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[0],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                        },
-                                    },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_specific[0]},
                                 training_feedback,
                                 ],
                     on_timeline_finish: function() {
@@ -764,13 +753,11 @@
                 },
                 {
                     // Specific block 6
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
-                                {timeline: [fixation, train_test_trial], 
-                                        timeline_variables: stim_t_specific[1],
-                                        on_timeline_start: function() {
-                                            stim_t_specific[1] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[1],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                        },
-                                    },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_specific[1]},
                                 training_feedback,
                                 ],
                     on_timeline_finish: function() {
@@ -780,13 +767,11 @@
                 },
                 {
                     // Specific block 7
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown, 
-                                {timeline: [fixation, train_test_trial], 
-                                        timeline_variables: stim_t_specific[2],
-                                        on_timeline_start: function() {
-                                            stim_t_specific[2] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[2],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                        },
-                                    },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_specific[2]},
                                 training_feedback,
                                 ],
                     on_timeline_finish: function() {
@@ -796,13 +781,11 @@
                 },
                 {
                     // Specific block 8
-                    timeline: [study_instructions, countdown, study_procedure, test_instructions, countdown,  
-                                {timeline: [fixation, train_test_trial], 
-                                        timeline_variables: stim_t_specific[3],
-                                        on_timeline_start: function() {
-                                            stim_t_specific[3] = jsPsych.randomization.shuffleNoRepeats(stim_t_specific[3],  function(a,b) { return a.A_category === b.A_category}, 3);
-                                        },
-                                    },
+                    timeline: [study_instructions, countdown, {timeline: [fixation, training_trial],
+                                                                timeline_variables: jsPsych.randomization.shuffleNoRepeats(pairs,  
+                                                                        function(a,b) { return a.A_category === b.A_category}, 3)},
+                                test_instructions, countdown, {timeline: [fixation, train_test_trial], 
+                                                                timeline_variables: stim_t_specific[3]},
                                 training_feedback,
                                 ],
                      on_timeline_finish: function() {
@@ -1659,7 +1642,7 @@
 
         jsPsych.init({
             timeline: timeline,
-            preload_images: [],
+            preload_images: [training_A.map(a => a.image), training_B, practice_img, ins_img, goal_cues],
             show_progress_bar: true,
             auto_update_progress_bar: false,
             message_progress_bar: '',
