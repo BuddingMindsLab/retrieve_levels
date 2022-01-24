@@ -89,7 +89,7 @@ function AFC_display(A, B, A_category, question, lure, training) {
         else { html += 'inc"'; }
         html += '" style="border-style: solid; border-width: thick; border-color: white;">\
                     <br><br><br><br>\
-                    <p style="font-size: 100px; text-transform: uppercase;">'+choices[0]+'</p>\
+                    <p style="font-size: 90px; text-transform: uppercase;">'+choices[0]+'</p>\
                     <br><br><br><br>\
                 </div>\
                 <div><p style="font-size: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>\
@@ -98,7 +98,7 @@ function AFC_display(A, B, A_category, question, lure, training) {
         else { html += 'inc"'; }        
         html += '" style="border-style: solid; border-width: thick; border-color: white;">\
                     <br><br><br><br>\
-                    <p style="font-size: 100px; text-transform: uppercase;">'+choices[1]+'</p>\
+                    <p style="font-size: 90px; text-transform: uppercase;">'+choices[1]+'</p>\
                     <br><br><br><br>\
                 </div>\
             </div>';
