@@ -1496,7 +1496,7 @@
                 );
                 var score = responses.map(a=>a.correct).filter(Boolean).length;
                 
-                html += Math.round((score/responses.length)*100,1) + '% (' + score+' /'+responses.length+')<br><br>';
+                html += Math.round((score/responses.length)*100,1) + '%<br><br>';
                 html += 'Good job!<br><br><br><p style="color:yellow; font-size: 100px;"";>&star;</p><br><br>';
 
                 if (score/responses.length > 0.7) {
@@ -1546,6 +1546,7 @@
             // organize data into sections
             var training_responses1 = jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]);
             var training_data1 = {'phase': 'training_practice', 'data': training_responses1.values()};  
+            console.log(training_data1);
 
             var training_responses2 = jsPsych.data.get().filter([{exp_section: 'training_test'}]);
             var training_data2 = {'phase': 'training', 'data': training_responses2.values()};  
@@ -1666,8 +1667,8 @@
         timeline.push(retrieve2_procedure);
 
         timeline.push(reward_instructions_end);*/
-        timeline.push(send_data_trial);
         timeline.push(feedback_survey);
+        timeline.push(send_data_trial);
         timeline.push(debrief_page);
         timeline.push(end_trial);
 
