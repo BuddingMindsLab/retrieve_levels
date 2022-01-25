@@ -3,9 +3,11 @@
 // score update html display
 function feedback_fxn(responses, last, practice, practice_length) {
     var html = '';
+    //var max_score = 269; // total possible is 384, but reach earth at 70% (269)
 
     if (practice) {
         responses = responses.slice(responses.length-practice_length, responses.length);
+        //max_score = responses.length;
     }
 
     var keypress_data = responses.map(a=>a.response);
@@ -16,7 +18,7 @@ function feedback_fxn(responses, last, practice, practice_length) {
     } else {
         html += 'TOTAL Score: ';
     }
-    html += Math.round((score/responses.length)*100,1) + '% ('+ score +' /'+responses.length+')<br><br>';
+    html += Math.round((score/responses.length)*100,1) +'%<br><br>';
 
     // if respond to less than 50% with arrow keys, give reminder
     if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
