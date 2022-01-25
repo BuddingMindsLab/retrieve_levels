@@ -1573,6 +1573,9 @@
                 var retrieve2_q = jsPsych.data.get().filter([{exp_section: 'r2_instruction_quiz'}]);
                 var retrieve2_quiz = {'phase': 'retrieve2_quiz', 'data': retrieve2_q.values()};
 
+                var survey = jsPsych.data.get().filter([{exp_section: 'survey'}]);
+                var survey_data = {'phase': 'survey', 'data': survey.values()};
+
                 
                 var pairs_data = {'phase': 'pairs', 'data': pairs};
                 var seq_data = {'phase': 'sequences', 'data': retrieve_sequences};
@@ -1593,6 +1596,7 @@
                         retrieve2_data1,
                         retrieve2_quiz,
                         retrieve2_data2,
+                        survey_data,
                         pairs_data,
                         seq_data
                     ]
@@ -1647,7 +1651,7 @@
 
         timeline.push(training_instructions);
         timeline.push(training_practice);
-        /*timeline.push(training_procedure);
+        timeline.push(training_procedure);
 
         timeline.push(training_test_instructions);
         timeline.push(training_test_practice);
@@ -1664,7 +1668,7 @@
         timeline.push(retrieve2_practice);
         timeline.push(retrieve2_procedure);
 
-        timeline.push(reward_instructions_end);*/
+        timeline.push(reward_instructions_end);
         timeline.push(feedback_survey);
         timeline.push(send_data_trial);
         timeline.push(debrief_page);
