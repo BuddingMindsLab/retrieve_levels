@@ -495,19 +495,18 @@
 
         /**************************************************** subject ID ****************************************************/
     
-        // Subject id = subject number + 
-        function makeid() {
-            var id = '';
-
-            // subject number (15 digit code)
-            id += jsPsych.randomization.randomID(15);
-
-            // condition
-            //id += group_condition.toString();
-
-            return id;
+        // Subject id = subject number + group condition
+        var subjectID_survey = {
+            type: 'survey-text',
+            questions: [
+                {prompt: 'Subject Number:', name: 'subject_id', rows: 1, columns:10, required:true},
+                {prompt: 'Age:', name: 'age', rows: 1, columns:10, required:true},
+            ],
+            data: {
+                exp_section: 'subjectid_survey'
+            },
+            button_label: 'Start',
         }
-        var subject_id = makeid();
 
         /*************************************************** Instructions **************************************************/
         
@@ -1539,6 +1538,10 @@
                 var duration = ((end_time - start_time)/60000).toFixed(2);
 
                 // organize data into sections
+                var subject_id = jsPsych.data.get().filter([{exp_section: 'subjectid_survey'}]).values()[0].response.subject_id;
+                var age = jsPsych.data.get().filter([{exp_section: 'subjectid_survey'}]).values()[0].response.age;
+
+
                 var training_responses1 = jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]);
                 var training_data1 = {'phase': 'training_practice', 'data': training_responses1.values()};  
                 console.log(training_data1);
@@ -1578,6 +1581,7 @@
                     duration: duration,
                     date: Date(),
                     group: exp_type,
+                    age: age,
                     data: [
                         training_data1,
                         training_data2,
@@ -1632,6 +1636,7 @@
 
         timeline.push(preload);
         timeline.push(fullscreen);
+        timeline.push(subjectID_survey);
         //timeline.push(consent);
         timeline.push(start_instructions);
 
