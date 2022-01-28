@@ -60,7 +60,12 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
         default: true,
         description: 'If true, trial will end when subject makes a response.'
       },
-
+      buffer_duration: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Trial duration',
+        default: null,
+        description: 'How long to show trial before it ends after response.'
+      },
     }
   }
 
@@ -155,7 +160,13 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
       }
 
       if (trial.response_ends_trial) {
-        end_trial();
+        if (trial.buffer_duration !== null) {
+          jsPsych.pluginAPI.setTimeout(function() {
+            end_trial();
+          }, trial.buffer_duration);
+        } else {
+          end_trial();
+        }
       }
     };
 
