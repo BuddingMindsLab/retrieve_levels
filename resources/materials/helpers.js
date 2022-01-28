@@ -20,7 +20,7 @@ function feedback_fxn(responses, last, practice, practice_length) {
         html += 'Level: ';
         if (score>=0 && score<45){
             html += 'Pluto'
-        } else if (score>=45 && score<90) {
+         } else if (score>=45 && score<90) {
             html += 'Neptune'
         } else if (score>=90 && score<135) {
             html += 'Uranus'
@@ -33,7 +33,9 @@ function feedback_fxn(responses, last, practice, practice_length) {
         } else if (score>=270) {
             html += 'EARTH!'
         }
-        html += '<img src="../img/instructions/reward_screen.png"></img>'
+        html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="../../resources/img/instructions/reward_screen.png"></img>\
+                </div><br>'
     }
 
     // if respond to less than 50% with arrow keys, give reminder
@@ -43,7 +45,7 @@ function feedback_fxn(responses, last, practice, practice_length) {
         if (score < Math.round(responses.length*0.5)) {
             html += 'Remember to pick the item that was paired with the object during the <b>LEARNING</b> game.<br><br>'; 
         } else {
-            html += 'Good job!';
+            html += 'Good job!<br>';
         }
     }
 
