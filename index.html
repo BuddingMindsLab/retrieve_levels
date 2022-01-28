@@ -650,8 +650,8 @@
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",
-            trial_duration: training_q_time,
-            response_ends_trial: false,
+            //trial_duration: training_q_time,
+            response_ends_trial: true,
             feedback: function() {
                 if (jsPsych.timelineVariable('phase') =='train_test') {
                     return false;
@@ -1646,7 +1646,7 @@
 
         timeline.push(preload);
         timeline.push(fullscreen);
-        timeline.push(consent);
+        //timeline.push(consent);
         timeline.push(start_instructions);
 
         timeline.push(training_instructions);
@@ -1671,7 +1671,7 @@
         timeline.push(reward_instructions_end);
         timeline.push(feedback_survey);
         timeline.push(send_data_trial);
-        timeline.push(debrief_page);
+        //timeline.push(debrief_page);
         timeline.push(end_trial);
 
         jsPsych.init({

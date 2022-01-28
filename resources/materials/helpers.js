@@ -3,7 +3,7 @@
 // score update html display
 function feedback_fxn(responses, last, practice, practice_length) {
     var html = '';
-    //var max_score = 269; // total possible is 384, but reach earth at 70% (269)
+    var max_score = 270; // total possible is 384, but reach earth at 70% (269)
 
     if (practice) {
         responses = responses.slice(responses.length-practice_length, responses.length);
@@ -15,10 +15,26 @@ function feedback_fxn(responses, last, practice, practice_length) {
 
     if (practice) {
         html += 'Practice Score: ';
+        html += Math.round((score/responses.length)*100,1) +'%<br><br>';
     } else {
-        html += 'TOTAL Score: ';
+        html += 'Level: ';
+        if (score>=0 && score<45){
+            html += 'Pluto'
+        } else if (score>=45 && score<90) {
+            html += 'Neptune'
+        } else if (score>=90 && score<135) {
+            html += 'Uranus'
+        } else if (score>=135 && score<180) {
+            html += 'Saturn'
+        } else if (score>=180 && score<225) {
+            html += 'Jupiter'
+        } else if (score>=225 && score<270) {
+            html += 'Mars'
+        } else if (score>=270) {
+            html += 'EARTH!'
+        }
+        html += '<img src="../img/instructions/reward_screen.png"></img>'
     }
-    html += Math.round((score/responses.length)*100,1) +'%<br><br>';
 
     // if respond to less than 50% with arrow keys, give reminder
     if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
@@ -27,7 +43,7 @@ function feedback_fxn(responses, last, practice, practice_length) {
         if (score < Math.round(responses.length*0.5)) {
             html += 'Remember to pick the item that was paired with the object during the <b>LEARNING</b> game.<br><br>'; 
         } else {
-            html += 'Good job!<br><br><br><p style="color:yellow; font-size: 100px;"";>&star;</p><br><br>';
+            html += 'Good job!';
         }
     }
 
