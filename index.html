@@ -283,9 +283,7 @@
         // preload images
         var preload = {
             type: 'preload',
-            images: [
-                training_A.map(a => a.image), training_B, practice_img, ins_img, goal_cues
-            ]
+            images: training_A.map(a => a.image).concat(training_B, practice_img, ins_img, goal_cues)
         };
 
 
@@ -1667,7 +1665,7 @@
 
         jsPsych.init({
             timeline: timeline,
-            preload_images: [training_A.map(a => a.image), training_B, practice_img, ins_img, goal_cues],
+            preload_images: training_A.map(a => a.image).concat(training_B, practice_img, ins_img, goal_cues),
             show_progress_bar: true,
             auto_update_progress_bar: false,
             message_progress_bar: '',
