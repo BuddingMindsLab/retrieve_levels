@@ -34,7 +34,7 @@ function feedback_fxn(responses, last, practice, practice_length) {
             html += 'EARTH!'
         }
         html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="../resources/img/instructions/reward_screen.png"></img>\
+                    <img style="width:'+img_size+'%" src="retrieve_levels/resources/img/instructions/reward_screen.png"></img>\
                 </div><br>'
     }
 
