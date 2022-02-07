@@ -153,3 +153,83 @@ function is_correct(data) {
     }
     return correct;
 }
+
+function send_data() {
+    var end_time = new Date();
+    var duration = ((end_time - start_time)/60000).toFixed(2);
+
+    // organize data into sections
+    var subject_id = jsPsych.data.get().filter([{exp_section: 'subjectid_survey'}]).values()[0].response.subject_id;
+    var age = jsPsych.data.get().filter([{exp_section: 'subjectid_survey'}]).values()[0].response.age;
+
+
+    var training_responses1 = jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]);
+    var training_data1 = {'phase': 'training_practice', 'data': training_responses1.values()};  
+    console.log(training_data1);
+
+    var training_responses2 = jsPsych.data.get().filter([{exp_section: 'training_test'}]);
+    var training_data2 = {'phase': 'training', 'data': training_responses2.values()};  
+
+
+    var retrieve1_responses1 = jsPsych.data.get().filter([{exp_section: 'retrieve1_practice'}]);
+    var retrieve1_data1 = {'phase': 'retrieve1_practice', 'data': retrieve1_responses1.values()};
+
+    var retrieve1_responses2 = jsPsych.data.get().filter([{exp_section: 'retrieve1'}]);
+    var retrieve1_data2 = {'phase': 'retrieve1', 'data': retrieve1_responses2.values()};
+    
+
+    var retrieve2_responses1 = jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]);
+    var retrieve2_data1 = {'phase': 'retrieve2_practice', 'data': retrieve2_responses1.values()}; 
+
+    var retrieve2_responses2 = jsPsych.data.get().filter([{exp_section: 'retrieve2'}]);
+    var retrieve2_data2 = {'phase': 'retrieve2', 'data': retrieve2_responses2.values()};
+
+    var retrieve2_q = jsPsych.data.get().filter([{exp_section: 'r2_instruction_quiz'}]);
+    var retrieve2_quiz = {'phase': 'retrieve2_quiz', 'data': retrieve2_q.values()};
+
+    var survey = jsPsych.data.get().filter([{exp_section: 'survey'}]);
+    var survey_data = {'phase': 'survey', 'data': survey.values()};
+
+    
+    var pairs_data = {'phase': 'pairs', 'data': pairs};
+    var seq_data = {'phase': 'sequences', 'data': retrieve_sequences};
+
+    // data to save in json file
+    var data = {
+        experiment: "retrieve_levels",
+        repo: "buddingmindslab.github.io",
+        subject: subject_id,
+        duration: duration,
+        date: Date(),
+        group: exp_type,
+        age: age,
+        data: [
+            training_data1,
+            training_data2,
+            retrieve1_data1,
+            retrieve1_data2,
+            retrieve2_data1,
+            retrieve2_quiz,
+            retrieve2_data2,
+            survey_data,
+            pairs_data,
+            seq_data
+        ]
+    }
+    
+    // send data to savejs
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST','https://savejs.netlify.app/.netlify/functions/savejs');
+    xhr.setRequestHeader('Content-Type','application/json');
+    xhr.onload = function(){
+        if(xhr.status==200){
+            var response=JSON.parse(xhr.responseText);
+            console.log(response.success);
+        }
+        else {
+            console.log("failed to send data");
+        }
+    };
+    xhr.send(JSON.stringify(data));
+    console.log("success sending data");
+}
