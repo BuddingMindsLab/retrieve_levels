@@ -1554,9 +1554,11 @@
 
         var survey_q1 = "What strategies did you use to remember the pairs?";
         var survey_q2 = "Did you feel distracted or bored at any point? If so, when?";
-        var survey_q3 = "For the last two tasks (Memory game and Clue Memory game), did you think of the paired item during the delay or did you wait until the two answer options appeared?"
-        var survey_q4 = "Which part of the task did you find the most difficult?";
-        var survey_q5 = "Do you have any general comments about the experiment?";
+        var survey_q3 = "For the last two tasks (Memory game and Clue Memory game),<br>did you think of the paired item during the delay or did you wait until the two answer options appeared?"
+        var survey_q4 = "For the Clue Memory game, what did the blue triangle mean?";
+        var survey_q5 = "For the Clue Memory game, what did the green circle mean?";
+        var survey_q6 = "Which part of the task did you find the most difficult?";
+        var survey_q7 = "Do you have any general comments about the experiment?";
 
         var feedback_survey = {
             type: 'survey-text',
@@ -1564,8 +1566,10 @@
                 {prompt: survey_q1, name: 'strategy', rows: 5, columns:50, required:true},
                 {prompt: survey_q2, name: 'attention', rows: 5, columns:50, required:true},
                 {prompt: survey_q3, name: 'delay', rows: 5, columns:50, required:true},
-                {prompt: survey_q4, name: 'difficult', rows: 5, columns:50, required:true},
-                {prompt: survey_q5, name: 'general', rows: 5, columns:50, required:false}
+                {prompt: survey_q4, name: 'triangle', rows: 2, columns:50, required:true},
+                {prompt: survey_q5, name: 'circle', rows: 2, columns:50, required:false},
+                {prompt: survey_q6, name: 'difficult', rows: 5, columns:50, required:true},
+                {prompt: survey_q7, name: 'general', rows: 5, columns:50, required:false}
             ],
             preamble: '<b>Survey</b>',
             data: {
@@ -1683,7 +1687,7 @@
         /********************** Experiment *********************/
 
         timeline.push(preload);
-        //timeline.push(training_feedback);
+        timeline.push(training_feedback);
 
         timeline.push(fullscreen);
         timeline.push(subjectID_survey);
