@@ -20,22 +20,41 @@ function feedback_fxn(responses, last, practice, practice_length) {
         html += 'Level: ';
         if (score>=0 && score<45){
             html += 'Pluto'
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_1.png"></img>\
+                </div><br>'
          } else if (score>=45 && score<90) {
             html += 'Neptune'
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_2.png"></img>\
+                </div><br>'
         } else if (score>=90 && score<135) {
             html += 'Uranus'
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_3.png"></img>\
+                </div><br>'
         } else if (score>=135 && score<180) {
             html += 'Saturn'
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_4.png"></img>\
+                </div><br>'
         } else if (score>=180 && score<225) {
             html += 'Jupiter'
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_5.png"></img>\
+                </div><br>'
         } else if (score>=225 && score<270) {
             html += 'Mars'
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_6.png"></img>\
+                </div><br>'
         } else if (score>=270) {
             html += 'EARTH!'
-        }
-        html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen.png"></img>\
+            html += '<br><div class="col">\
+                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_7.png"></img>\
                 </div><br>'
+        }
+        
     }
 
     // if respond to less than 50% with arrow keys, give reminder
