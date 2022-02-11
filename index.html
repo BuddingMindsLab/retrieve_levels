@@ -109,7 +109,7 @@
                             Based on your progress through the games, your rocket will move closer toward Earth. \
                             You will earn bonus money when you get to Saturn ($1) and when you reach Earth (a total of $2). \
                             <br><br>\
-                            Your goal is to get to Earth before the games are over!<br><br>\
+                            Your goal is to get to Earth before the experiment is over!<br><br>\
                             <div style="position: relative; top: 0; left: 0;">\
                                 <img src="resources/img/instructions/reward_screen_1.png">\
                             </div></div><br><br>',
@@ -136,12 +136,14 @@
                                 <br>\
                                 For the question on the right, we should pick the word “MUSHROOM” (right) since it was a mushroom, and not a tree, that was paired with the paintbrush.\
                                 <br>\
+                                <b>In the game, you will not know if you chose correctly.</b>\
+                                <br><br>\
                                 In the actual game, the possible words you could see will be: <b>LEAF, APPLE, ROCK,</b> or <b>SHELL</b>.\
                                 <br><br>\
-                                You will have as much time as you need to answer the question. If you can’t remember after a few seconds, make your best guess.\
+                                You will have as much time as you need to answer the question. If you cannot remember after a few seconds, make your best guess.\
                                 <br><br>\
                                 There will be breaks in this game to show your level.\
-                                 Your goal is to get to Earth by the end of the game!\
+                                 Your goal is to get to Earth by the end of the experiment!\
                                  <br><br>',
                                 practice_ins
                             ];
@@ -176,7 +178,7 @@
                                 In the game you will not know if you chose correctly.\
                                 <br><br>\
                             Try to respond as fast as you can on the final screen.\
-                            You only have 1 second to respond. \
+                            <b>You only have 1 second to respond.</b> \
                             <br>\
                             It will help you respond in time if you have tried to remember the paired item before the pictures or words to come up.<br><br>',
                             
@@ -212,7 +214,7 @@
         }
         var retrieve2_ins = ['<br> Good job on the <b>MEMORY</b> game!\
                                 <br><br>\
-                            For the last game, you will again remember the pairs you learned, but this time you will get a clue about the type of question that is coming.\
+                            For the last <b>CLUE MEMORY</b> game, you will again remember the pairs you learned, but this time you will get a clue about the type of question that is coming.\
                             <br><br>\
                             Like the previous <b>MEMORY</b> game, a plus sign will first appear on the screen, and then an object. \
                             <br>\
@@ -236,9 +238,9 @@
                                 <img style="width:60%" src="'+goal_cue_ex+'"><br><br>\
                             On the last screen (far right), if the picture or word on the <b>LEFT</b> was paired with the object, press the left arrow key <img style="width:3%;" src="resources/img/instructions/keyboard_key_left.png">.<br>\
                             If the picture or word on the <b>RIGHT</b> was paired with the object, press the right arrow key <img style="width:3%;" src="resources/img/instructions/keyboard_key_right.png">.<br><br>\
-                            Try to respond as fast as you can. You only have 1 second to respond. \
+                            Try to respond as fast as you can. <b>You only have 1 second to respond.</b> \
                             <br><br>\
-                            If you do well on this task, you can earn a $1 bonus! \
+                            If you do well on this task, you can earn a <b>$1 bonus</b>! \
                             Make sure to use the clue so you can respond as quickly and accurately as possible.<br><br>',
 
                                 '<br>You will first be <b>quized</b> on the clues (triangle and circle) to make sure you understand what they mean.<br><br>\
@@ -1051,7 +1053,8 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'training_test_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_ttest[0].length*2);
+                                    false, true, practice_pairs_ttest[0].length*2) +
+                                    '<b>Remember, the real game will not show the correct choice.</b><br><br>';
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1251,7 +1254,8 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve1_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve1_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_ttest[0].length);
+                                    false, true, practice_pairs_ttest[0].length)+
+                                    '<b>Remember, the real game will not show the correct choice.</b><br><br>';
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1539,7 +1543,8 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_r2.length);
+                                    false, true, practice_pairs_r2.length)+
+                                    '<b>Remember, the real game will not show the correct choice.</b><br><br>';
             },
             //trial_duration: score_time,
             choices: ['Next']
