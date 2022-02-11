@@ -715,6 +715,10 @@
                 A_item: jsPsych.timelineVariable('A'),
                 B_item: jsPsych.timelineVariable('B'),
                 A_category: jsPsych.timelineVariable('A_category')
+            },
+            on_finish: function() {
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                jsPsych.setProgressBar(curr_progress_bar_value + (1/24));
             }
         };
 
@@ -723,7 +727,10 @@
         var test_instructions = {
             type: 'html-keyboard-response',
             stimulus: test_ins,
-            trial_duration: instruction_time
+            trial_duration: instruction_time,
+            on_start: function() {
+                jsPsych.setProgressBar(0);
+            }
         }
         
         // 2AFC cued with B item to select paired A item
@@ -738,7 +745,13 @@
             prompt: "",
             //trial_duration: training_q_time,
             response_ends_trial: true,
-            buffer_duration: 1000,
+            buffer_duration: function() {
+                if (jsPsych.timelineVariable('phase') =='train_test') {
+                    return 100;
+                } else {
+                    return 1000;
+                }
+            },
             feedback: function() {
                 if (jsPsych.timelineVariable('phase') =='train_test') {
                     return false;
@@ -759,6 +772,13 @@
                 console.log(data.correct); 
                 data.A_foil = A_foil;
                 data.choices = choices;
+
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                if (jsPsych.timelineVariable('phase') =='train_test') {
+                    jsPsych.setProgressBar(curr_progress_bar_value + (1/(24*3)));
+                } else {
+                    jsPsych.setProgressBar(curr_progress_bar_value + (1/24));
+                }
             }
         }
 
@@ -769,8 +789,13 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values(), false, false)
             },
-            trial_duration: score_time,
-            choices: ['Next']
+            //trial_duration: score_time,
+            choices: ['Next'],
+            on_start: function() {
+                if (!(jsPsych.data.get().last(2).values()[1].phase == 'train_test')) {
+                    jsPsych.setProgressBar(0);
+                }
+            }
         }
 
         var training_procedure = {
@@ -784,10 +809,6 @@
                                                                 timeline_variables: stim_t_neutral[0]},
                                 training_feedback
                             ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Neutral block 2
@@ -798,10 +819,6 @@
                                                                 timeline_variables: stim_t_neutral[1]},
                                 training_feedback
                             ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Neutral block 3
@@ -812,10 +829,6 @@
                                                                 timeline_variables: stim_t_neutral[2]},
                                 training_feedback
                                 ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Neutral block 4
@@ -826,10 +839,6 @@
                                                                 timeline_variables: stim_t_neutral[3]},
                                 training_feedback,
                                 ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Specific block 5
@@ -840,10 +849,6 @@
                                                                 timeline_variables: stim_t_specific[0]},
                                 training_feedback,
                                 ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Specific block 6
@@ -854,10 +859,6 @@
                                                                 timeline_variables: stim_t_specific[1]},
                                 training_feedback,
                                 ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Specific block 7
@@ -868,10 +869,6 @@
                                                                 timeline_variables: stim_t_specific[2]},
                                 training_feedback,
                                 ],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 },
                 {
                     // Specific block 8
@@ -882,10 +879,6 @@
                                                                 timeline_variables: stim_t_specific[3]},
                                 training_feedback,
                                 ],
-                     on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/8));
-                    }
                 }
             ]
         };
@@ -1030,7 +1023,10 @@
             type: 'instructions',
             pages: train_test_ins,
             show_clickable_nav: true,
-            show_page_number: true
+            show_page_number: true,
+            on_start: function() {
+                jsPsych.setProgressBar(0);
+            }
         };
 
         
@@ -1086,46 +1082,31 @@
             ],
         }
 
-        var ttest_block_instructions = {
-            type: 'html-keyboard-response',
-            stimulus: train_test_ins,
-            trial_duration: instruction_time
-        }
 
         var training_test = {
             timeline: [
                 // block 1
                 {
-                    timeline: [{timeline: [fixation, train_test_trial], timeline_variables: stim_t_test[0]}],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/3));
-                    }
+                    timeline: [{timeline: [fixation, train_test_trial], 
+                                timeline_variables: stim_t_test[0]
+                            }],
                 },
                 training_feedback,
                 // block 2
                 {
-                    timeline: [{timeline: [fixation, train_test_trial], timeline_variables: stim_t_test[1]}],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/3));
-                    }
+                    timeline: [{timeline: [fixation, train_test_trial], 
+                                timeline_variables: stim_t_test[1]
+                            }]
                 },
                 training_feedback,
                 // block 3
                 {
-                    timeline: [{timeline: [fixation, train_test_trial], timeline_variables: stim_t_test[2]}],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/3));
-                    }
+                    timeline: [{timeline: [fixation, train_test_trial], 
+                                timeline_variables: stim_t_test[2]
+                            }]
                 },
                 training_feedback
-            ],
-            on_start: function() {
-                // set progress bar to 0 at the start of task
-                jsPsych.setProgressBar(0);
-            }
+            ]
         };
 
         /********************** Retrieve 1 *********************/
@@ -1134,7 +1115,10 @@
             type: 'instructions',
             pages: retrieve1_ins,
             show_clickable_nav: true,
-            show_page_number: true
+            show_page_number: true,
+            on_start: function() {
+                jsPsych.setProgressBar(0);
+            }
         };
         
 
@@ -1185,6 +1169,9 @@
                 console.log(data.correct);
                 data.A_foil = A_foil;
                 data.choices = choices;
+
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                jsPsych.setProgressBar(curr_progress_bar_value + (1/(24*3)));
             }
         };
         var r1_feedback = {
@@ -1192,7 +1179,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(), false, false);
             },
-            trial_duration: score_time,
+            //trial_duration: score_time,
             choices: ['Next']
         }
 
@@ -1296,50 +1283,28 @@
                 r1_practice_feedback
             ],
         }
-
-        var r_block_instructions = {
-            type: 'html-keyboard-response',
-            stimulus: retrieve_block_ins,
-            trial_duration: instruction_time   
-        };
         
         var retrieve1_procedure = {
             timeline: [ 
                 // block 1
                 {
                     timeline: [retrieve_ITI, retrieve_cue, retrieve_delay, retrieve1_question],
-                    timeline_variables: stim_r1[0],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/3));
-                    }
+                    timeline_variables: stim_r1[0]
                 },
                 r1_feedback,
                 // block 2
                 {
                     timeline: [retrieve_ITI, retrieve_cue, retrieve_delay, retrieve1_question],
-                    timeline_variables: stim_r1[1],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/3));
-                    }
+                    timeline_variables: stim_r1[1]
                 },
                 r1_feedback,
                 // block 3
                 {
                     timeline: [retrieve_ITI, retrieve_cue, retrieve_delay, retrieve1_question],
-                    timeline_variables: stim_r1[2],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/3));
-                    }
+                    timeline_variables: stim_r1[2]
                 },
                 r1_feedback
-            ],
-            on_start: function() {
-                // set progress bar to 0 at the start of task
-                jsPsych.setProgressBar(0);
-            }
+            ]
         };
 
         /********************** Retrieve 2 *********************/
@@ -1348,7 +1313,10 @@
             type: 'instructions',
             pages: retrieve2_ins,
             show_clickable_nav: true,
-            show_page_number: true
+            show_page_number: true,
+            on_start: function() {
+                jsPsych.setProgressBar(0);
+            }
         };
         
 
@@ -1401,6 +1369,9 @@
                 console.log(data.correct);
                 data.A_foil = A_foil;
                 data.choices = choices;
+
+                var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
+                jsPsych.setProgressBar(curr_progress_bar_value + (1/(24*2)));
             }
         };
 
@@ -1409,7 +1380,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values(), false, false);
             },
-            trial_duration: score_time,
+            //trial_duration: score_time,
             choices: ['Next']
         }
         
@@ -1584,21 +1555,13 @@
                 // block 1
                 {
                     timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question],
-                    timeline_variables: stim_r2[0],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/2));
-                    }
+                    timeline_variables: stim_r2[0]
                 },
                 r2_feedback,
                 // block 2
                 {
                     timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question],
-                    timeline_variables: stim_r2[1],
-                    on_timeline_finish: function() {
-                        var curr_progress_bar_value = jsPsych.getProgressBarCompleted();
-                        jsPsych.setProgressBar(curr_progress_bar_value + (1/2));
-                    }
+                    timeline_variables: stim_r2[1]
                 },
                 r2_feedback,
             ]
@@ -1613,7 +1576,6 @@
                     jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(),
                     jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()
                 ), true, false), 
-            trial_duration: score_time,
         };
 
         /********************************************* Survey *********************************************/
@@ -1766,7 +1728,7 @@
         timeline.push(training_test_instructions);
         timeline.push(training_test_practice);
         timeline.push(training_test);
-        timeline.push(send_data_trial);
+        //timeline.push(send_data_trial);
 
         timeline.push(retrieve1_instructions);
         timeline.push(retrieve1_practice);
