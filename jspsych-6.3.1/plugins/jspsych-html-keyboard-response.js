@@ -48,6 +48,12 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
         default: false,
         description: 'If true, feedback sound played after response.'
       },
+      practice: {
+        type: jsPsych.plugins.parameterType.BOOL,
+        pretty_name: 'Give feedback',
+        default: false,
+        description: 'If true, give feedback if dont answer.'
+      },
       trial_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'Trial duration',
@@ -71,7 +77,14 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    var new_html = '<div id="jspsych-html-keyboard-response-stimulus">'+trial.stimulus+'</div>';
+    var new_html = '';
+    if (trial.practice == true) {
+        //new_html += '<div><h1 style="position:fixed; top:10%; align-items: flex-start;">Practice session</h1></div><br><br>';
+        document.getElementById("jspsych-progressbar-container").getElementsByTagName("span")[0].innerText = "PRACTICE";
+    } else {
+      document.getElementById("jspsych-progressbar-container").getElementsByTagName("span")[0].innerText = "";
+    }
+    new_html += '<div id="jspsych-html-keyboard-response-stimulus">'+trial.stimulus+'</div>';
 
     // add prompt
     if(trial.prompt !== null){
