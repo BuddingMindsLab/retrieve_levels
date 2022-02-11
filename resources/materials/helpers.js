@@ -1,7 +1,7 @@
 /**************************************************** Helper Functions ****************************************************/
 
 // score update html display
-function feedback_fxn(responses, last, practice, practice_length) {
+function feedback_fxn(responses, missed, last, practice, practice_length) {
     var html = '';
     var max_score = 270; // total possible is 384, but reach earth at 70% (269)
 
@@ -25,37 +25,42 @@ function feedback_fxn(responses, last, practice, practice_length) {
         if (score>=0 && score<45){
             html += 'Pluto'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_1.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_1.png"></img>\
                 </div><br>'
          } else if (score>=45 && score<90) {
             html += 'Neptune'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_2.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_2.png"></img>\
                 </div><br>'
         } else if (score>=90 && score<135) {
             html += 'Uranus'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_3.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_3.png"></img>\
                 </div><br>'
         } else if (score>=135 && score<180) {
             html += 'Saturn'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_4.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_4.png"></img>\
                 </div><br>'
+            if (last) {
+                html += 'You will recieve a bonus of $2!<br><br>';
+            } else {
+                html += 'You will recieve a bonus of $1!<br><br>';
+            }
         } else if (score>=180 && score<225) {
             html += 'Jupiter'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_5.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_5.png"></img>\
                 </div><br>'
         } else if (score>=225 && score<270) {
             html += 'Mars'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_6.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_6.png"></img>\
                 </div><br>'
         } else if (score>=270) {
             html += 'EARTH!'
             html += '<br><div class="col">\
-                    <img style="width:'+img_size+'%" src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_7.png"></img>\
+                    <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_7.png"></img>\
                 </div><br>'
         }
         
@@ -65,10 +70,9 @@ function feedback_fxn(responses, last, practice, practice_length) {
     if (last) {
         if (score/max_score >= 1) {
             html += 'You will recieve a bonus of $3!<br><br>';
-        } else if (score/max_score >= 0.5) {
-            html += 'You will recieve a bonus of $2!<br><br>';
-        }
+        } 
     } else {
+        html += 'Missed '+missed+' trials.<br><br>';
         if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
             html += 'Make sure to respond using the arrow keys on your keyboard.<br><br>';
         } else {

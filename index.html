@@ -787,7 +787,9 @@
         var training_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values(), false, false)
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values(), 
+                                    jsPsych.data.get().filter([{exp_section: 'training_test', rt: null}]).values().length,
+                                    false, false)
             },
             //trial_duration: score_time,
             choices: ['Next'],
@@ -983,7 +985,9 @@
         var training_practice_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), false, true, practice_pairs_test[0].length*2);
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), 
+                                    jsPsych.data.get().filter([{exp_section: 'training_test_practice', rt: null}]).values().length,
+                                    false, true, practice_pairs_test[0].length*2);
             },
             choices: ['Next'],
             response_ends_trial: true
@@ -1045,7 +1049,9 @@
         var ttest_practice_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), false, true, practice_pairs_ttest[0].length*2);
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), 
+                                    jsPsych.data.get().filter([{exp_section: 'training_test_practice', rt: null}]).values().length,
+                                    false, true, practice_pairs_ttest[0].length*2);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1177,7 +1183,10 @@
         var r1_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(), false, false);
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values()), 
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve1', rt: null}]).values().length,
+                                    false, false);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1240,7 +1249,9 @@
         var r1_practice_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve1_practice'}]).values(), false, true, practice_pairs_ttest[0].length);
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve1_practice'}]).values(), 
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve1_practice', rt: null}]).values().length,
+                                    false, true, practice_pairs_ttest[0].length);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1378,7 +1389,11 @@
         var r2_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values(), false, false);
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(), 
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()), 
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve2', rt: null}]).values().length,
+                                    false, false);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1522,7 +1537,9 @@
         var r2_practice_feedback = {
             type: 'html-button-response',
             stimulus: function() {
-                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]).values(), false, true, practice_pairs_r2.length);
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]).values(), 
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve2_practice', rt: null}]).values().length,
+                                    false, true, practice_pairs_r2.length);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1563,7 +1580,6 @@
                     timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question],
                     timeline_variables: stim_r2[1]
                 },
-                r2_feedback,
             ]
         };
         
@@ -1573,9 +1589,10 @@
             type: 'html-button-response',
             choices: ['Continue to survey'],
             stimulus: feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
-                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(),
-                    jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()
-                ), true, false), 
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(),
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()), 
+                                    0,
+                                    true, false), 
         };
 
         /********************************************* Survey *********************************************/
@@ -1728,7 +1745,7 @@
         timeline.push(training_test_instructions);
         timeline.push(training_test_practice);
         timeline.push(training_test);
-        //timeline.push(send_data_trial);
+        timeline.push(send_data_trial);
 
         timeline.push(retrieve1_instructions);
         timeline.push(retrieve1_practice);
