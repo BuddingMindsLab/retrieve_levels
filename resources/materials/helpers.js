@@ -17,7 +17,11 @@ function feedback_fxn(responses, last, practice, practice_length) {
         html += 'Practice Score: ';
         html += Math.round((score/responses.length)*100,1) +'%<br><br>';
     } else {
-        html += 'Level: ';
+        if (last == true) {
+            html += 'Fantastic work!<br><br> Your final level is: '
+        } else {
+            html += 'Level: ';
+        }
         if (score>=0 && score<45){
             html += 'Pluto'
             html += '<br><div class="col">\
@@ -58,20 +62,30 @@ function feedback_fxn(responses, last, practice, practice_length) {
     }
 
     // if respond to less than 50% with arrow keys, give reminder
-    if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
-        html += 'Make sure to respond using the arrow keys on your keyboard.<br><br>';
+    if (last) {
+        if (score/max_score >= 1) {
+            html += 'You will recieve a bonus of $3!<br><br>';
+        } else if (score/max_score >= 0.5) {
+            html += 'You will recieve a bonus of $2!<br><br>';
+        }
     } else {
-        if (score < Math.round(responses.length*0.5)) {
-            html += 'Remember to pick the item that was paired with the object during the <b>LEARNING</b> game.<br><br>'; 
+        if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
+            html += 'Make sure to respond using the arrow keys on your keyboard.<br><br>';
         } else {
-            html += 'Good job!<br>';
+            if (score < Math.round(responses.length*0.5)) {
+                html += 'Remember to pick the item that was paired with the object during the <b>LEARNING</b> game.<br><br>'; 
+            } else {
+                html += 'Good job!<br>';
+            }
         }
     }
+    
 
     if (practice) {
         html += 'Press <i>Next</i> to start the real game!<br><br>';
     } else if (last) {
-        html += 'Press <i>Next</i> to go on to the next game!<br><br>';
+        html += '<br><br>You have almost completed the experiment. Now you will be directed to a brief survey on your experience.<br>\
+        You will receive compensation only after completing the survey.<br><br>';
     } else {
         html += 'Press <i>Next</i> to continue the game!<br><br>';
     }
@@ -109,7 +123,7 @@ function AFC_display(A, B, A_category, question, lure, training) {
                     <img class="';
         if (choices[0]==A) { html += 'corr"'; }
         else { html += 'inc"'; }
-        html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="'
+        html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
         if (choices[0]==A) { html +='resources/img/instructions/check.png'} 
         else { html += 'resources/img/instructions/ex.png' }
         html += '">\
@@ -119,7 +133,7 @@ function AFC_display(A, B, A_category, question, lure, training) {
                     <img class="';
         if (choices[1]==A) { html += 'corr"'; }
         else { html += 'inc"'; }
-        html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="'
+        html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
         if (choices[1]==A) { html +='resources/img/instructions/check.png'} 
         else { html += 'resources/img/instructions/ex.png' }        
         html += '">\
@@ -131,22 +145,30 @@ function AFC_display(A, B, A_category, question, lure, training) {
         A_foil =  lure;
         choices = jsPsych.randomization.shuffle([A_category,A_foil]);
         html += '<div class="row" style="height: '+img_size+'%;">\
-                <div id="leftChoice" class="col ';
-        if (choices[0]==A_category) { html += 'corr"'; }
-        else { html += 'inc"'; }
-        html += '" style="border-style: solid; border-width: thick; border-color: white;">\
+                <div id="leftChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
                     <br><br><br><br>\
                     <p style="font-size: 90px; text-transform: uppercase;">'+choices[0]+'</p>\
                     <br><br><br><br>\
+                    <img class="';
+        if (choices[0]==A_category) { html += 'corr"'; }
+        else { html += 'inc"'; }
+        html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
+        if (choices[0]==A_category) { html +='resources/img/instructions/check.png'} 
+        else { html += 'resources/img/instructions/ex.png' }
+        html += '">\
                 </div>\
                 <div><p style="font-size: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>\
-                <div id="rightChoice" class="col ';
-        if (choices[1]==A_category) { html += 'corr"'; }
-        else { html += 'inc"'; }        
-        html += '" style="border-style: solid; border-width: thick; border-color: white;">\
+                <div id="rightChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
                     <br><br><br><br>\
                     <p style="font-size: 90px; text-transform: uppercase;">'+choices[1]+'</p>\
                     <br><br><br><br>\
+                    <img class="';
+        if (choices[1]==A_category) { html += 'corr"'; }
+        else { html += 'inc"'; }
+        html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
+        if (choices[1]==A_category) { html +='resources/img/instructions/check.png'} 
+        else { html += 'resources/img/instructions/ex.png' }        
+        html += '">\
                 </div>\
             </div>';
     }

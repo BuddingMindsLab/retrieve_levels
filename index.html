@@ -37,63 +37,79 @@
                         If you do well, you will be able to earn up to $3 in bonus pay.<br><br>\
                         Please press <i>Next</i> and read the following instructions carefully<br><br>';
 
-        var practice_ins = '<br>You will first have the chance to practice this game to make sure you understand what we are asking you to do.<br><br>\
-                            Once you have finished reading the instructions, please place your fingers on the arrow keys and click the left arrow to begin the practice.<br>\
+        var practice_ins = '<br>You will first have the chance to <b>practice</b> this game to make sure you understand what we are asking you to do.<br><br>\
+                            Once you have finished reading the instructions, please place your fingers on the arrow keys and click the right arrow to begin the practice.<br>\
                             After you have successfully completed the practice, you may begin the game.<br><br>';
         
         var training_ins = ['<br>Your first task is to <b>LEARN</b> and <b>REMEMBER</b> pairs of pictures!<br><br>\
                             During the <b>LEARNING</b> part, you will see 2 objects on the screen.\
                              Try your best to remember that these two objects go together.\
+                             <br>\
                             You do not need to press any buttons while you are learning, just try to remember the pairs.<br><br>\
-                            For example, you might see a paintbrush paired with a mushroom:<br>\
+                            For example, you might see a paintbrush paired with a mushroom:<br><br>\
                             <div class="row">\
                                 <div class="col">\
-                                    <img style="width:50%" src="resources/img/instructions/study_ex1.png">\
+                                    <img style="width:20%" src="resources/img/instructions/study_ex1.png">\
                                 </div>\
                             </div><br><br>\
                             Each pair will be on the screen for three and a half seconds.\
+                            <br>\
                              Then, a plus sign will appear for a short time, followed by another pair. \
-                             You do not need to do anything when the plus sign is on the screen; just wait for the next pair to appear.\
                              <br><br>\
                             We have found that imagining the two objects on the screen interacting helps people remember the pairs.\
+                            <br>\
                              For example, you might imagine painting the mushroom with the paintbrush. \
-                             Or, you might like to use words to help you remember the pair. \
+                             Or, you might use words to help you remember the pair. \
+                             <br>\
                              We will not ask you to tell us your story, so it can be as silly as you like!\
                               Just try to come up with something that helps you remember. \
                             <br><br>',
+
                             '<br>In the <b>REMEMBERING</b> part, your job is to show us how well you remember the pairs! \
+                            <br><br>\
                             You will see one object on the top of the screen and two on the bottom. \
+                            <br>\
                             You should pick which object on the bottom of the screen goes with the one on top. \
                             <br><br>\
-                            Here is an example:<br>\
+                            Here is an example:<br><br>\
                             <img style="width:20%" src="resources/img/instructions/test_ex1_neutral.png"><br><br>\
                             Since we just learned that the paintbrush was paired with this mushroom in the <b>LEARNING</b> part, we should choose the left picture!\
+                            <br><br>\
                              To pick the picture on the left, press the left arrow key <img style="width:3%;" src="resources/img/instructions/keyboard_key_left.png">;\
                                  to pick the picture on the right, press the right arrow key <img style="width:3%;" src="resources/img/instructions/keyboard_key_right.png">.<br>\
                              In this example, we would press the left arrow key!\
                              <br><br>\
-                            Sometimes you will choose between objects of <b>different kinds</b>, like the mushroom and tree, and sometimes you will choose between objects of the <b>same kind</b>, like two different mushrooms.\
+                            Sometimes you will choose between objects of <b>different kinds</b>, like the mushroom and tree, and \
+                            <br>\
+                            sometimes you will choose between objects of the <b>same kind</b>, like two different mushrooms.\
                             <br><br>\
                             In the real experiment, you will not see mushrooms but instead <b>apples, shells, leaves,</b> and <b>rocks</b> will be paired with everyday objects.\
                             <br><br>\
                             You will have as long as you need to make your choice.\
                             Try to respond as fast and accurately as you can!\
+                            <br>\
                             If you are unsure of the correct answer, that is OK, just make your best guess.\
                             After you make your response, we will show you whether you were correct.\
+                            <br>\
                             A green checkmark will appear below the correct object, and a red X below the incorrect answer.\
-                             A sound will also play indicating whether you chose the correct item.',
+                            <br>\
+                            A sound will also play indicating whether you chose the correct item.\
+                            <br><br>',
 
                             '<br>For this game, you will study every pair during <b>LEARNING</b> parts.\
+                            <br>\
                              After each <b>LEARNING</b> part, you will do a <b>REMEMBERING</b> part. \
+                             <br><br>\
                              You will learn and remember the pairs 8 times, so you will have lots of chances to learn them!\
-                              Afterwards, there will be a final <b>REMEMBERING</b> game. \
+                             <br>\
+                             Afterwards, there will be a final <b>REMEMBERING</b> game. \
                               <br><br>\
                             After each <b>REMEMBERING</b> part, you will see a screen with your level in the game so far.\
                             Your game piece is a rocket. \
                             Based on your progress through the games, your rocket will move closer toward Earth. \
                             You will earn bonus money when you get to Saturn ($1) and when you reach Earth (a total of $2). \
                             <br><br>\
-                            Your goal is to get to Earth before the games are over!<br>\
+                            Your goal is to get to Earth before the games are over!<br><br>\
                             <div style="position: relative; top: 0; left: 0;">\
                                 <img src="resources/img/instructions/reward_screen_1.png">\
                             </div></div><br><br>',
@@ -101,38 +117,46 @@
                             ];
 
         var train_test_ins = ['Great job on the <b>LEARNING & REMEMBERING</b> game!\
+                                <br>\
                                  You will now play the final <b>REMEMBERING</b> part before moving on to the next games in the experiment.\
                                  <br><br>\
                                 For this part, you will see different types of remembering questions. \
                                 An object will always appear on the top of the screen. \
+                                <br>\
                                 On the bottom of the screen, there will either be two images of objects or two words to choose from.<br> \
                                 For both, pick which bottom option was paired with the object on top.\
                                 <br><br>\
-                                For example, here are the different questions you could see for the paintbrush-mushroom pair:<br>\
+                                For example, here are the different questions you could see for the paintbrush-mushroom pair:<br><br>\
                                 <div class="row">\
                                     <div class="col">\
                                         <img style="width:50%" src="resources/img/instructions/test_ex1.png">\
                                     </div>\
-                                </div><br><br>\
+                                </div><br>\
                                 For the left and middle questions, we should pick the mushroom that was paired with the paintbrush during learning.\
-                                 For the question on the right, we should pick the word “MUSHROOM” (right) since it was a mushroom, and not a tree, that was paired with the paintbrush.\
+                                <br>\
+                                For the question on the right, we should pick the word “MUSHROOM” (right) since it was a mushroom, and not a tree, that was paired with the paintbrush.\
+                                <br>\
                                 In the actual game, the possible words you could see will be: <b>LEAF, APPLE, ROCK,</b> or <b>SHELL</b>.\
                                 <br><br>\
                                 You will have as much time as you need to answer the question. If you can’t remember after a few seconds, make your best guess.\
                                 <br><br>\
                                 There will be breaks in this game to show your level.\
-                                 Your goal is to get to Earth by the end of the game!',
+                                 Your goal is to get to Earth by the end of the game!\
+                                 <br><br>',
                                 practice_ins
                             ];
 
-        var retrieve1_ins = ['Good job on the <b>LEARNING & REMEMBERING</b> game!\
+        var retrieve1_ins = ['<br>Good job on the <b>LEARNING & REMEMBERING</b> game!\
                              <br><br>\
                             Your next task will be to remember the pairs you just learned in another way. \
                             <br><br>\
                             For this <b>MEMORY</b> game, a plus sign will appear on the screen for a short time. \
                             Then, you will see an object for one and a half seconds.\
+                            <br>\
                             After the object, there will be a long delay where only a star appears on screen.\
+                            <br>\
                             During this time, you should try to remember the item that was paired with the object you saw before. \
+                            <br>\
                             <u>Try to remember the item and hold it in your mind</u>. \
                             Then two item pictures or words will show up on the screen.\
                             <br><br>\
@@ -143,33 +167,36 @@
                             <img style="width:50%" src="resources/img/instructions/retrieve1_ex1.png"><br><br>\
                             In the last screen (far right), you will see two options.\
                             In this example, these are two different mushrooms. \
+                            <br><br>\
                             If the item on the <b>LEFT</b> was paired with the object shown before (paintbrush), press the left arrow key <img style="width:3%;" src="resources/img/instructions/keyboard_key_left.png">.<br>\
                             If the item on the <b>RIGHT</b> was paired with the object, press the right arrow key <img style="width:3%;" src="resources/img/instructions/keyboard_key_right.png">.<br>\
                             For this example, you should choose the left picture since the paintbrush was paired with this particular mushroom in the <b>LEARNING & REMEMBERING</b> game.\
                             <br><br>\
+                            The green highlights the correct key response in this example. \
+                                In the game you will not know if you chose correctly.\
+                                <br><br>\
                             Try to respond as fast as you can on the final screen.\
                             You only have 1 second to respond. \
+                            <br>\
                             It will help you respond in time if you have tried to remember the paired item before the pictures or words to come up.<br><br>',
                             
-                            'There are <b>three</b> possible questions that may show up after the delay on the last screen. \
+                            '<br>There are <b>three</b> possible questions that may show up after the delay on the last screen. \
                             <br><br>\
-                            For one question type, you must choose which of two items of the same kind was paired with the object, for example, choosing between two different mushrooms like above.\
+                            For one question type, you must choose which of two items of the same kind was paired with the object, <br>\
+                            for example, choosing between two different mushrooms.\
                             <br><br>\
                             For the second question type, you must choose which of two pictures of different kinds was paired with the object, for example a mushroom and a tree:<br><br>\
                                <div class="row" style="display: flex; align-items:center;">\
                                     <div class="col">\
-                                        <img style="width:50%;" src="resources/img/instructions/r1_ex1_neutral.png">\
+                                        <img style="width:15%;" src="resources/img/instructions/r1_ex1_neutral.png">\
                                     </div>\
                                </div><br><br>\
                             For the third question type, you must choose which word describes the item paired with the object, for example “MUSHROOM” or “TREE”:<br><br>\
                                 <div class="row" style="display: flex; align-items:center;">\
                                     <div class="col">\
-                                        <img style="width:50%" src="resources/img/instructions/r1_ex1_general.png">\
+                                        <img style="width:15%" src="resources/img/instructions/r1_ex1_general.png">\
                                     </div>\
                                 </div><br><br>\
-                                The green highlights the correct key response in this example. \
-                                In the game you will not know if you chose correctly.\
-                                <br><br>\
                                 There will be breaks in the <b>MEMORY</b> game to show your level. \
                                 Your goal is to get to Earth before the games are over!<br><br>',
                                 practice_ins
@@ -183,19 +210,24 @@
         if (['5', '6', '7', '8'].includes(exp_type)) {
             goal_cue_ex = 'resources/img/instructions/r2_ex1_gr5-8.png';
         }
-        var retrieve2_ins = ['<br> Good job on the MEMORY game!\
+        var retrieve2_ins = ['<br> Good job on the <b>MEMORY</b> game!\
                                 <br><br>\
                             For the last game, you will again remember the pairs you learned, but this time you will get a clue about the type of question that is coming.\
                             <br><br>\
                             Like the previous <b>MEMORY</b> game, a plus sign will first appear on the screen, and then an object. \
+                            <br>\
                             After the object, you will see either a blue triangle or a green circle, which is a clue about what kind of question is coming. \
+                            <br>\
                             Then there will be a long delay with just a star in the middle of the screen. \
+                            <br>\
                             During this time, try to remember the item that was paired with the object you saw before and <u>hold it in your mind</u>. \
                             <br><br>\
-                            If the shape shown after the object was a <b>'+goal_cue_names[0]+'</b>], then you will usually, but not always, choose between two items of the same kind after the delay. \
+                            If the shape shown after the object was a <b>'+goal_cue_names[0]+'</b>, then you will usually, but not always, choose between two items of the same kind after the delay. \
+                            <br>\
                             Your job is to tell us which of the items shown was paired with the object!\
                             <br><br>\
-                            If the shape shown after the object was a <b>'+goal_cue_names[1]+'</b>], then you will usually, but not always, choose between two words. \
+                            If the shape shown after the object was a <b>'+goal_cue_names[1]+'</b>, then you will usually, but not always, choose between two words. \
+                            <br>\
                             Your job is to tell us which word describes the item that was paired with the object! \
                             <br><br>\
                             Most of the time, the clue shape will tell you what kind of choice you will be making next, so it is best to use it to prepare!\
@@ -209,13 +241,13 @@
                             If you do well on this task, you can earn a $1 bonus! \
                             Make sure to use the clue so you can respond as quickly and accurately as possible.<br><br>',
 
-                                '<br>You will first be quized on the clues (triangle and circle) to make sure you understand.<br><br>\
+                                '<br>You will first be <b>quized</b> on the clues (triangle and circle) to make sure you understand what they mean.<br><br>\
                                 Once you have finished reading the instructions, please press <i>Next</i> to begin the quiz.<br>\
                                 After you have successfully completed the quiz, you may begin the practice and then the game.<br><br>'
                             ];
         
-        var r2_practice_ins = '<br>You will next have the chance to practice this game to make sure you understand.<br><br>\
-                            Please place your fingers on the arrow keys and click the left arrow to begin the practice. <br>\
+        var r2_practice_ins = '<br>You will next have the chance to <b>practice</b> this game to make sure you understand.<br><br>\
+                            Please place your fingers on the arrow keys and click the right arrow to begin the practice. <br>\
                             After you have successfully completed the practice, you may begin the game.<br><br>';
 
         var reward_ins_final = ['Fantastic work!<br><br> Your final level is: ', 
@@ -328,6 +360,7 @@
             'resources/img/instructions/r1_ex1_specific.png',
             'resources/img/instructions/r1_ex1_opts.png',
             'resources/img/instructions/r2_ex1_gr1-4.png',
+            'resources/img/instructions/r2_ex1_gr5-8.png',
             'resources/img/instructions/retrieve1_ex1.png',
             'resources/img/instructions/reward_screen_1.png',
             'resources/img/instructions/reward_screen_2.png',
@@ -340,6 +373,9 @@
             'resources/img/instructions/test_ex1_general.png',
             'resources/img/instructions/test_ex1_specific.png',
             'resources/img/instructions/test_ex1_neutral.png',
+            'resources/img/instructions/test_ex1.png',
+            'resources/img/instructions/check.png',
+            'resources/img/instructions/ex.png',
         ]
 
         // preload images
@@ -619,17 +655,20 @@
 
                     type: 'html-keyboard-response',
                     stimulus: '<p style="font-size:60px;">3</p>',
-                    trial_duration: 1000
+                    trial_duration: 1000,
+                    response_ends_trial: false,
                 },
                 {
                     type: 'html-keyboard-response',
                     stimulus: '<p style="font-size:60px;">2</p>',
-                    trial_duration: 1000
+                    trial_duration: 1000,
+                    response_ends_trial: false,
                 },
                 {
                     type: 'html-keyboard-response',
                     stimulus: '<p style="font-size:60px;">1</p>',
-                    trial_duration: 1000
+                    trial_duration: 1000,
+                    response_ends_trial: false,
                 }
             ]
         }
@@ -884,15 +923,15 @@
 
         var practice_study_ins = {
             type: 'html-keyboard-response',
-            stimulus: study_ins,
-            practice: true,
-            trial_duration: instruction_time
+            stimulus: '<h1>Practice Session</h1><br>'+study_ins,
+            trial_duration: instruction_time,
+            response_ends_trial: false,
         }
         var practice_test_ins = {
             type: 'html-keyboard-response',
-            stimulus: test_ins,
-            practice: true,
-            trial_duration: instruction_time
+            stimulus: '<h1>Practice Session</h1><br>'+test_ins,
+            trial_duration: instruction_time,
+            response_ends_trial: false,
         }
         var training_trial_practice = {
             type: 'html-keyboard-response',
@@ -1158,6 +1197,30 @@
         }
 
 
+        // PRACTICE
+        var retrieve_ITI_practice = {
+            type: 'html-keyboard-response',
+            stimulus: '<div style="font-size:60px;">+</div>',
+            choices: jsPsych.NO_KEYS,
+            practice: true,
+            trial_duration: function() { return jsPsych.randomization.sampleWithoutReplacement(rITI, 1)[0]; },
+        };
+        var retrieve_cue_practice = {
+            type: 'html-keyboard-response',
+            stimulus: function() {
+                return '<img style="width:'+img_size+'%" src="'+jsPsych.timelineVariable('B')+'">'
+            },
+            choices: jsPsych.NO_KEYS,
+            practice: true,
+            trial_duration: b_cue_time,
+        };
+        var retrieve_delay_practice = {
+            type: 'html-keyboard-response',
+            stimulus: '<div style="font-size:80px;">*</div>',
+            choices: jsPsych.NO_KEYS,
+            practice: true,
+            trial_duration: delay_time,
+        };
         var retrieve1_question_practice = {
             type: 'html-keyboard-response',
             stimulus: function() {
@@ -1198,9 +1261,9 @@
 
         var r1_practice_study_ins = {
             type: 'html-keyboard-response',
-            stimulus: 'Reminder of practice pairs will begin in 90 seconds',
-            practice: true,
-            trial_duration: instruction_time   
+            stimulus: '<h1>Practice Session</h1><br>'+'Reminder of practice pairs will begin in 90 seconds',
+            trial_duration: instruction_time,
+            response_ends_trial: false,
         }        
         var retrieve1_practice = {
             timeline: [
@@ -1216,7 +1279,7 @@
                 practice_test_ins,
                 countdown,
                 {
-                    timeline: [retrieve_ITI, retrieve_cue, retrieve_delay, retrieve1_question_practice], 
+                    timeline: [retrieve_ITI_practice, retrieve_cue_practice, retrieve_delay_practice, retrieve1_question_practice], 
                     timeline_variables: practice_pairs_ttest[0],
                     randomize_order: true
                 },
@@ -1433,6 +1496,29 @@
                                             practice_pairs.map((x, idx) => ({...x, lure: x["s_lure"], question: 'specific', q_valid: true})).slice(1,3),
                                                 practice_pairs.map((x, idx) => ({...x, lure: x["g_lure"], question: 'general', q_valid: true})).slice(3,4));
         
+        var retrieve2_goal_practice = {
+            type: 'image-keyboard-response',
+            stimulus: function() {
+                if (jsPsych.timelineVariable('question') == 'general') {
+                    if (jsPsych.timelineVariable('q_valid')) {
+                        return goal_cues[1];
+                    } else{
+                        return goal_cues[0];
+                    }
+                        
+                } else if (jsPsych.timelineVariable('question') == 'specific') {
+                    if (jsPsych.timelineVariable('q_valid')) {
+                        return goal_cues[0];
+                    } else {
+                        return goal_cues[1];
+                    }
+                }
+            },
+            practice: true,
+            choices: jsPsych.ANY_KEYS,
+            trial_duration: goal_cue_time,
+            response_ends_trial: false
+        }
         var retrieve2_question_practice = {
             type: 'html-keyboard-response',
             stimulus: function() {
@@ -1485,7 +1571,7 @@
                 practice_test_ins,
                 countdown,
                 {
-                    timeline: [retrieve_ITI, retrieve_cue, retrieve2_goal, retrieve_delay, retrieve2_question_practice], 
+                    timeline: [retrieve_ITI_practice, retrieve_cue_practice, retrieve2_goal_practice, retrieve_delay_practice, retrieve2_question_practice], 
                     timeline_variables: practice_pairs_r2,
                     randomize_order: true
                 },
@@ -1523,24 +1609,10 @@
         var reward_instructions_end = {
             type: 'html-button-response',
             choices: ['Continue to survey'],
-            stimulus: function() {
-                var html = reward_ins_final[0];
-                var responses = jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
+            stimulus: feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
                     jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(),
                     jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()
-                );
-                var score = responses.map(a=>a.correct).filter(Boolean).length;
-                
-                html += Math.round((score/responses.length)*100,1) + '%<br><br>';
-                html += 'Good job!<br><br><br><p style="color:yellow; font-size: 100px;"";>&star;</p><br><br>';
-
-                if (score/responses.length > 0.7) {
-                    html += 'You will recieve a bonus of $[]!<br><br>';
-                }
-
-                html += reward_ins_final[1]
-                return html;
-            },
+                ), true, false), 
             trial_duration: score_time,
         };
 
