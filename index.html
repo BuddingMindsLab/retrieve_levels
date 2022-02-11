@@ -739,9 +739,13 @@
         var train_test_trial = {
             type: 'html-keyboard-response',
             stimulus: function() {
+                var feedback = true;
+                if (jsPsych.timelineVariable('phase') =='train_test') {
+                    feedback = false;
+                }
                return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
                                   jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), true);
+                                  jsPsych.timelineVariable('lure'), true, feedback);
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",
@@ -959,7 +963,7 @@
             stimulus: function() {
                return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
                                   jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), true);
+                                  jsPsych.timelineVariable('lure'), true, true);
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",
@@ -1158,7 +1162,7 @@
             stimulus: function() {
                 return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
                                   jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), false);
+                                  jsPsych.timelineVariable('lure'), false, false);
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",
@@ -1225,7 +1229,7 @@
             stimulus: function() {
                 return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
                                   jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), false);
+                                  jsPsych.timelineVariable('lure'), false, true);
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",
@@ -1363,7 +1367,7 @@
             stimulus: function() {
                 return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
                                   jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), false);
+                                  jsPsych.timelineVariable('lure'), false, false);
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",
@@ -1514,7 +1518,7 @@
             stimulus: function() {
                 return AFC_display(jsPsych.timelineVariable('A'), jsPsych.timelineVariable('B'), 
                                   jsPsych.timelineVariable('A_category'), jsPsych.timelineVariable('question'),
-                                  jsPsych.timelineVariable('lure'), false);
+                                  jsPsych.timelineVariable('lure'), false, true);
             },
             choices: ['ArrowLeft','ArrowRight'],
             prompt: "",

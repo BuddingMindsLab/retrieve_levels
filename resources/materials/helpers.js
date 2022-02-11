@@ -100,7 +100,7 @@ function feedback_fxn(responses, missed, last, practice, practice_length) {
 // AFC question html display
 var A_foil = '';
 var choices = [];
-function AFC_display(A, B, A_category, question, lure, training) {
+function AFC_display(A, B, A_category, question, lure, training, feedback) {
 
     var html = '';
 
@@ -123,25 +123,35 @@ function AFC_display(A, B, A_category, question, lure, training) {
         choices = jsPsych.randomization.shuffle([A,A_foil]);
         html += '<div class="row">\
                 <div id="leftChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
-                    <img style="width:'+img_size+'%" src="'+choices[0]+'"><br><br>\
-                    <img class="';
-        if (choices[0]==A) { html += 'corr"'; }
-        else { html += 'inc"'; }
-        html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
-        if (choices[0]==A) { html +='resources/img/instructions/check.png'} 
-        else { html += 'resources/img/instructions/ex.png' }
-        html += '">\
-                </div>\
+                    <img style="width:'+img_size+'%" src="'+choices[0]+'"><br><br>'
+
+        // add check or ex image under choice
+        if (feedback == true) {
+            html += '<img class="';
+            if (choices[0]==A) { html += 'corr"'; }
+            else { html += 'inc"'; }
+            html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
+            if (choices[0]==A) { html +='resources/img/instructions/check.png'} 
+            else { html += 'resources/img/instructions/ex.png' }
+            html += '">';
+        }
+                    
+        html += '</div>\
                 <div id="rightChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
-                    <img style="width:'+img_size+'%" src="'+choices[1]+'"><br><br>\
-                    <img class="';
-        if (choices[1]==A) { html += 'corr"'; }
-        else { html += 'inc"'; }
-        html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
-        if (choices[1]==A) { html +='resources/img/instructions/check.png'} 
-        else { html += 'resources/img/instructions/ex.png' }        
-        html += '">\
-                </div>\
+                    <img style="width:'+img_size+'%" src="'+choices[1]+'"><br><br>';
+
+        // add check or ex images under choice
+        if (feedback == true) {
+            html +=  '<img class="';
+            if (choices[1]==A) { html += 'corr"'; }
+            else { html += 'inc"'; }
+            html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
+            if (choices[1]==A) { html +='resources/img/instructions/check.png'} 
+            else { html += 'resources/img/instructions/ex.png' }   
+            html += '">';
+        }
+
+        html += '</div>\
             </div>';
 
     // General questions (show word options)
@@ -152,28 +162,36 @@ function AFC_display(A, B, A_category, question, lure, training) {
                 <div id="leftChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
                     <br><br><br><br>\
                     <p style="font-size: 90px; text-transform: uppercase;">'+choices[0]+'</p>\
-                    <br><br><br><br>\
-                    <img class="';
-        if (choices[0]==A_category) { html += 'corr"'; }
-        else { html += 'inc"'; }
-        html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
-        if (choices[0]==A_category) { html +='resources/img/instructions/check.png'} 
-        else { html += 'resources/img/instructions/ex.png' }
-        html += '">\
-                </div>\
+                    <br><br><br><br>';
+        
+        if (feedback==true) {
+            html += '<img class="';
+            if (choices[0]==A_category) { html += 'corr"'; }
+            else { html += 'inc"'; }
+            html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
+            if (choices[0]==A_category) { html +='resources/img/instructions/check.png'} 
+            else { html += 'resources/img/instructions/ex.png' }
+            html += '">';
+        }
+                    
+        html +=  '</div>\
                 <div><p style="font-size: 100px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p></div>\
                 <div id="rightChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
                     <br><br><br><br>\
                     <p style="font-size: 90px; text-transform: uppercase;">'+choices[1]+'</p>\
-                    <br><br><br><br>\
-                    <img class="';
-        if (choices[1]==A_category) { html += 'corr"'; }
-        else { html += 'inc"'; }
-        html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
-        if (choices[1]==A_category) { html +='resources/img/instructions/check.png'} 
-        else { html += 'resources/img/instructions/ex.png' }        
-        html += '">\
-                </div>\
+                    <br><br><br><br>';
+        
+        if (feedback==true){
+            html += '<img class="';
+            if (choices[1]==A_category) { html += 'corr"'; }
+            else { html += 'inc"'; }
+            html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="';
+            if (choices[1]==A_category) { html +='resources/img/instructions/check.png'} 
+            else { html += 'resources/img/instructions/ex.png' }        
+            html += '">';
+        }
+        
+        html += '</div>\
             </div>';
     }
         
