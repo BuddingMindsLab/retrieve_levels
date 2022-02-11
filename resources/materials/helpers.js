@@ -104,17 +104,25 @@ function AFC_display(A, B, A_category, question, lure, training) {
         }
         choices = jsPsych.randomization.shuffle([A,A_foil]);
         html += '<div class="row">\
-                <div id="leftChoice" class="col ';
+                <div id="leftChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
+                    <img style="width:'+img_size+'%" src="'+choices[0]+'"><br><br>\
+                    <img class="';
         if (choices[0]==A) { html += 'corr"'; }
         else { html += 'inc"'; }
-        html += ' style="border-style: solid; border-width: thick; border-color: white;">\
-                    <img style="width:'+img_size+'%" src="'+choices[0]+'">\
+        html += ' id="leftFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="'
+        if (choices[0]==A) { html +='resources/img/instructions/check.png'} 
+        else { html += 'resources/img/instructions/ex.png' }
+        html += '">\
                 </div>\
-                <div id="rightChoice" class="col ';
+                <div id="rightChoice" class="col" style="border-style: solid; border-width: thick; border-color: white;">\
+                    <img style="width:'+img_size+'%" src="'+choices[1]+'"><br><br>\
+                    <img class="';
         if (choices[1]==A) { html += 'corr"'; }
         else { html += 'inc"'; }
-        html += ' style="border-style: solid; border-width: thick; border-color: white;">\
-                    <img style="width:'+img_size+'%" src="'+choices[1]+'">\
+        html += ' id="rightFdb" style="width:'+img_size/2+'%; visibility: hidden;" src="'
+        if (choices[1]==A) { html +='resources/img/instructions/check.png'} 
+        else { html += 'resources/img/instructions/ex.png' }        
+        html += '">\
                 </div>\
             </div>';
 

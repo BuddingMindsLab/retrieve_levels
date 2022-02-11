@@ -114,8 +114,8 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
 
     // function to handle responses by the subject
     var after_response = function(info) {
-      var leftImg = document.getElementById("leftChoice");
-      var rightImg = document.getElementById("rightChoice");
+      var leftImg = document.getElementById("leftFdb");
+      var rightImg = document.getElementById("rightFdb");
 
       // after a valid response, the stimulus will have the CSS class 'responded'
       // which can be used to provide visual feedback that a response was recorded
@@ -126,14 +126,14 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
         response = info;
       }
 
-      // highlight response
+      /* highlight response
       if(response.rt !== null) {
         if(response.key == "arrowleft") {
           leftImg.style.borderColor = "black";
         } else {
           rightImg.style.borderColor = "black";
         }
-      }
+      }*/
 
       // give audio and visual feedback
       if (trial.feedback == true) {
@@ -142,21 +142,13 @@ jsPsych.plugins["html-keyboard-response"] = (function() {
             var aud = document.getElementById("correctAudio");
             aud.muted = false;
             aud.play();
-            if(response.key == "arrowleft") {
-              leftImg.style.borderColor = "green";
-            } else {
-              rightImg.style.borderColor = "green";
-            }
         } else {
             var aud = document.getElementById("incorrectAudio");
             aud.muted = false;
             aud.play();
-            if(response.key == "arrowleft") {
-              leftImg.style.borderColor = "red";
-            } else {
-              rightImg.style.borderColor = "red";
-            }
         }
+        leftImg.style.visibility = "visible";
+        rightImg.style.visibility = "visible";
       }
 
       if (trial.response_ends_trial) {
