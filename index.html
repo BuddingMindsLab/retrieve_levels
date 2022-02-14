@@ -106,6 +106,7 @@
                               <br><br>\
                             After each <b>REMEMBERING</b> part, you will see a screen with your level in the game so far.\
                             Your game piece is a rocket. \
+                            <br>\
                             Based on your progress through the games, your rocket will move closer toward Earth. \
                             You will earn bonus money when you get to Saturn ($1) and when you reach Earth (a total of $2). \
                             <br><br>\
@@ -1603,9 +1604,9 @@
             type: 'html-button-response',
             choices: ['Continue to survey'],
             stimulus: feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
-                                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(),
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()), 
-                                    0,
+                                    jsPsych.data.get().filter([{exp_section: 'retrieve2', rt: null}]).values().length,
                                     true, false), 
         };
 

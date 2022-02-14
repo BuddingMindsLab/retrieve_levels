@@ -62,16 +62,17 @@ function feedback_fxn(responses, missed, last, practice, practice_length) {
             html += '<br><div class="col">\
                     <img src="https://buddingmindslab.github.io/retrieve_levels/resources/img/instructions/reward_screen_7.png"></img>\
                 </div><br>'
+            if (last) {
+                html += 'You will recieve a bonus of $3!<br><br>';
+            } else {
+                html += 'You will recieve a bonus of $2!<br><br>';
+            }
         }
         
     }
 
     // if respond to less than 50% with arrow keys, give reminder
-    if (last) {
-        if (score/max_score >= 1) {
-            html += 'You will recieve a bonus of $3!<br><br>';
-        } 
-    } else {
+    if (!last) {
         html += 'Missed '+missed+' trials.<br><br>';
         if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
             html += 'Make sure to respond using the arrow keys on your keyboard.<br><br>';
