@@ -1468,8 +1468,11 @@
         var retrieve2_quiz_ans = {
             type: 'html-button-response',
             stimulus: function() {
-                html = 'Your score was '+jsPsych.data.get().last(1).values()[0].num_correct+'/2.<br><br>\
-                            <br><b>Answers</b><br><br>';
+                html = 'Your score was '+jsPsych.data.get().last(1).values()[0].num_correct+'/2.<br><br>';
+                if (jsPsych.data.get().last(1).values()[0].num_correct == 2) {
+                    html += '<p style="color:yellow;font-size:50px;">&#9734;</p>';
+                }
+                html += '<br><b>Answers</b><br><br>';
                 if (['1','2','3','4'].includes(exp_type)) {
                     html+= '<div>'+q_prompts[0]+' <b>'+q_options[0]+'</b></div>\
                             <div>'+q_prompts[1]+' <b>'+q_options[1]+'</b></div>\
