@@ -801,7 +801,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'training_test', rt: null}]).values().length,
-                                    false, false)
+                                    false, true, false)
             },
             //trial_duration: score_time,
             choices: ['Next'],
@@ -999,7 +999,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'training_test_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_test[0].length*2);
+                                    false, true, true, practice_pairs_test[0].length*2);
             },
             choices: ['Next'],
             response_ends_trial: true
@@ -1063,7 +1063,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'training_test_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_ttest[0].length*2) +
+                                    false, true, true, practice_pairs_ttest[0].length*2) +
                                     '<b>Remember, the real game will not show the correct choice.</b><br><br>';
             },
             //trial_duration: score_time,
@@ -1199,7 +1199,7 @@
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
                                     jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values()), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve1', rt: null}]).values().length,
-                                    false, false);
+                                    false, false, false);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1264,7 +1264,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve1_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve1_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_ttest[0].length)+
+                                    false, false, true, practice_pairs_ttest[0].length)+
                                     '<b>Remember, the real game will not show the correct choice.</b><br><br>';
             },
             //trial_duration: score_time,
@@ -1407,7 +1407,7 @@
                                     jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2', rt: null}]).values().length,
-                                    false, false);
+                                    false, false, false);
             },
             //trial_duration: score_time,
             choices: ['Next']
@@ -1556,7 +1556,7 @@
             stimulus: function() {
                 return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'retrieve2_practice'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2_practice', rt: null}]).values().length,
-                                    false, true, practice_pairs_r2.length)+
+                                    false, false, true, practice_pairs_r2.length)+
                                     '<b>Remember, the real game will not show the correct choice.</b><br><br>';
             },
             //trial_duration: score_time,
@@ -1605,12 +1605,14 @@
 
         var reward_instructions_end = {
             type: 'html-button-response',
-            choices: ['Continue to survey'],
-            stimulus: feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
+            stimulus: function() {
+                return feedback_fxn(jsPsych.data.get().filter([{exp_section: 'training_test'}]).values().concat(
                                     jsPsych.data.get().filter([{exp_section: 'retrieve1'}]).values(), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2'}]).values()), 
                                     jsPsych.data.get().filter([{exp_section: 'retrieve2', rt: null}]).values().length,
-                                    true, false), 
+                                    true, false, false);
+            },
+            choices: ['Continue to survey']
         };
 
         /********************************************* Survey *********************************************/

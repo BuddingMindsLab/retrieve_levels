@@ -1,7 +1,7 @@
 /**************************************************** Helper Functions ****************************************************/
 
 // score update html display
-function feedback_fxn(responses, missed, last, practice, practice_length) {
+function feedback_fxn(responses, missed, last, selfpaced, practice, practice_length) {
     var html = '';
     var max_score = 270; // total possible is 384, but reach earth at 70% (269)
 
@@ -72,8 +72,10 @@ function feedback_fxn(responses, missed, last, practice, practice_length) {
     }
 
     // if respond to less than 50% with arrow keys, give reminder
-    if (!last) {
+    if (!last && !selfpaced) {
         html += 'Missed '+missed+' trials.<br><br>';
+    }
+    if (!last) {
         if (keypress_data.map(a=>a=='arrowright'||a=='arrowleft').filter(Boolean).length < Math.round(responses.length*0.5)) {
             html += 'Make sure to respond using the arrow keys on your keyboard.<br><br>';
         } else {
